@@ -1,8 +1,8 @@
 (function(window, angular, $) {
     "use strict";
     angular.module('FileManagerApp').controller('FileManagerCtrl', [
-    '$scope', '$rootScope', '$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader', 'Commons',
-        function($scope, $rootScope, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, Commons) {
+    '$scope', '$rootScope', '$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader', 'Commons', 'SystemsController',
+        function($scope, $rootScope, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, Commons, SystemsController) {
         $scope.config = fileManagerConfig;
         $scope.appName = fileManagerConfig.appName;
         $scope.modes = ['Javascript', 'Shell', 'XML', 'Markdown', 'CLike', 'Python'];
@@ -21,7 +21,6 @@
                 $scope.modeChanged = function () {
                     $scope.cmMode = this.cmMode;
                     _cm.setOption("mode", $scope.cmMode.toLowerCase());
-                    // console.log("Changed editor model to " + $scope.cmMode.toLowerCase());
 
                     // lazy load the plugin for the necessary mode support
                     $ocLazyLoad.load([
@@ -134,6 +133,15 @@
                 }
             );
         };
+
+        // Populate systems for copy modal
+        $scope.getCopySystems = function(){
+          SystemsController.listSystems(99999).then(
+            function (response) {
+              $scope.copySystems = response;
+            }
+          );
+        }
 
         $scope.copy = function(item) {
             var samePath = item.tempModel.path.join() === item.model.path.join();

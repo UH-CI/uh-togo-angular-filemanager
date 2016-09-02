@@ -22,11 +22,17 @@
             $('#selector').modal('hide');
         };
 
-        $rootScope.openNavigator = function(item) {
+        $rootScope.openNavigator = function(item, system) {
+          if (typeof system !== 'undefined'){
+            $scope.fileNavigator.system = item.tempModel.system = system;
+            $scope.fileNavigator.currentPath = [];
+          } else {
             $scope.fileNavigator.system = item.model.system;
             $scope.fileNavigator.currentPath = item.model.path.slice();
-            $scope.fileNavigator.refresh();
-            $('#selector').modal('show');
+          }
+
+          $scope.fileNavigator.refresh();
+          $('#selector').modal('show');
         };
 
     }]);

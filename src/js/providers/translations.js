@@ -50,6 +50,7 @@
             no_files_in_folder: "No files in this folder",
             no_folders_in_folder: "This folder not contains children folders",
             select_this: "Select this",
+            select_new_destination: "Select destination",
             go_back: "Go back",
             wait: "Wait",
             move: "Move",
