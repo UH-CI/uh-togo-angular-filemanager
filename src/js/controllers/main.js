@@ -186,6 +186,10 @@
             });
         };
 
+        $scope.metadata = function(item) {
+            //don't do anything yet
+        };
+
         $scope.rename = function(item) {
             var samePath = item.tempModel.path.join() === item.model.path.join();
             if (samePath && $scope.fileNavigator.fileNameExists(item.tempModel.name)) {

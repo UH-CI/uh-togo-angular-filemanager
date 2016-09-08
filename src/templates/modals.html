@@ -1,7 +1,7 @@
 <div class="modal animated fadeIn" id="metadata">
   <div class="modal-dialog">
     <div class="modal-content">
-    <form ng-submit="remove(temp)">
+    <form ng-submit="metadata(temp)">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">
             <span aria-hidden="true">&times;</span>
@@ -15,7 +15,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
-        <button type="submit" class="btn btn-primary" ng-disabled="temp.inprocess" autofocus="autofocus">{{"save" | translate}}</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="" autofocus="autofocus">{{"save" | translate}}</button>
       </div>
       </form>
     </div>
