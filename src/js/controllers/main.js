@@ -188,6 +188,7 @@
 
         $scope.metadata = function(item) {
             //don't do anything yet
+            $scope.modal('metadata', true);
         };
 
         $scope.rename = function(item) {
