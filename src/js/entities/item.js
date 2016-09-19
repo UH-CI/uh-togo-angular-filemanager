@@ -82,7 +82,9 @@
         
             return deferred.promise;
         };
-
+        Item.prototype.metadata = function (){
+            //do nothing
+        }
         Item.prototype.rename = function() {
             var self = this;
             var deferred = $q.defer();
