@@ -23,6 +23,7 @@
             breadcrumb: true,
             allowedActions: {
                 rename: true,
+                metadata: true,
                 copy: true,
                 edit: true,
                 changePermissions: true,
