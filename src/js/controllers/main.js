@@ -185,7 +185,11 @@
                 $scope.modal('delete', true);
             });
         };
-
+        
+        $scope.getAssociationIds= function (url="::"){
+           return decodeURIComponent(url).split(":")[2].replace(/['"]+/g, '').replace('}','');
+        }
+        
         $scope.metadata = function(item) {
             //don't do anything yet
             $scope.modal('metadata', true);
