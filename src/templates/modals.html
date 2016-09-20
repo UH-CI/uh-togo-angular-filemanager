@@ -13,8 +13,9 @@
         {{'file_to_associate_with' | translate}} <b>{{temp.model.name}}</b> ?
         <div ng-include data-src="'error-bar'" class="clearfix"></div>
         </br>
-        <b>Association Ids: </b>{{getAssociationIds(temp.model.system._links.metadata.href)}}
-
+        <b>Association Ids: </b>{{association_ids)}}
+      </br>
+      {{metas}}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>

@@ -1,8 +1,8 @@
 (function(window, angular, $) {
     "use strict";
-    angular.module('FileManagerApp').controller('FileManagerCtrl', [
-    '$scope', '$rootScope', '$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader', 'Commons', 'SystemsController',
-        function($scope, $rootScope, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, Commons, SystemsController) {
+    angular.module('FileManager`').controller('FileManagerCtrl', [
+    '$scope', '$rootScope', '$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader', 'Commons', 'SystemsController','MetaController',
+        function($scope, $rootScope, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, Commons, SystemsController,MetaController) {
         $scope.config = fileManagerConfig;
         $scope.appName = fileManagerConfig.appName;
         $scope.modes = ['Javascript', 'Shell', 'XML', 'Markdown', 'CLike', 'Python'];
@@ -186,13 +186,32 @@
             });
         };
         
+        //parse the associationIds from a url
+        //return the associationIds decoded
         $scope.getAssociationIds= function (url="::"){
            return decodeURIComponent(url).split(":")[2].replace(/['"]+/g, '').replace('}','');
         }
+
+        //fetch metadata related to a given association Id or Ids
+        //return the json metadata response
+        $scope.fetchCurrentMetadata= function(associationIds){
+            if (associationIds != ""){
+            MetaController.listMetadata({'associationIds':'673572511630299622-242ac113-0001-002'}).then(
+                function(response){
+                  result = response.result;
+               }
+             );
+             return result;
+            }
+        }
         
         $scope.metadata = function(item) {
-            //don't do anything yet
+            //fetch item (file/folder) associationIds and associated  metadata records
+            $scope.association_ids = getAssociationIds(temp.model.system._links.metadata.href)
+            $scope.metas = fetchCurrentMetadata($scope.association_ids);
+            //open metadata modal
             $scope.modal('metadata', true);
+
         };
 
         $scope.rename = function(item) {
