@@ -293,9 +293,10 @@
         $scope.metadataFiles = function(fileListSelected){
           var uuids = [];
           angular.forEach(fileListSelected, function(file){
-            uuids.push(file.uuid)
+            uuids.push(file.model.uuid)
           })
-          $state.go('filemetadata-multipleadd',{uuid: $scope.metadataUuid});
+          //alert(uuids);
+          $state.go('filemetadata-multipleadd',{uuids: uuids});
           /*$scope.fileMetadata.metadataSelected(fileListSelected).then(function() {
               $scope.fileNavigator.refresh();
               $scope.modal('uploadfile', true);
