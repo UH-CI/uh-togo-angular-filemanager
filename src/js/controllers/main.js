@@ -1,8 +1,8 @@
 (function(window, angular, $) {
     "use strict";
     angular.module('FileManagerApp').controller('FileManagerCtrl', [
-    '$scope', '$rootScope', '$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader', 'Commons', 'SystemsController',
-        function($scope, $rootScope, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, Commons, SystemsController) {
+    '$scope', '$rootScope', '$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader','fileMetadata', 'Commons', 'SystemsController',
+        function($scope, $rootScope, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, FileMetadata, Commons, SystemsController) {
         $scope.config = fileManagerConfig;
         $scope.appName = fileManagerConfig.appName;
         $scope.modes = ['Javascript', 'Shell', 'XML', 'Markdown', 'CLike', 'Python'];
@@ -185,11 +185,11 @@
                 $scope.modal('delete', true);
             });
         };
-        
+
         $scope.getAssociationIds= function (url="::"){
            return decodeURIComponent(url).split(":")[2].replace(/['"]+/g, '').replace('}','');
         }
-        
+
         $scope.metadata = function(item) {
             //don't do anything yet
             $scope.modal('metadata', true);
@@ -288,6 +288,21 @@
               var errorMsg = data.result && data.result.error || $translate.instant('error_downloading_files');
               $scope.temp.error = errorMsg;
           });
+        }
+
+        $scope.metadataFiles = function(fileListSelected){
+          var uuids = {};
+          angular.forEach(fileListSelected, function(file){
+            uuids.push(file.uuid)
+          })
+          $state.go('filemetadata-multipleadd',{uuid: $scope.metadataUuid});
+          /*$scope.fileMetadata.metadataSelected(fileListSelected).then(function() {
+              $scope.fileNavigator.refresh();
+              $scope.modal('uploadfile', true);
+          }, function(data) {
+              var errorMsg = data.result && data.result.error || $translate.instant('error_downloading_files');
+              $scope.temp.error = errorMsg;
+          });*/
         }
 
         $scope.deleteFiles = function(fileListSelected){
