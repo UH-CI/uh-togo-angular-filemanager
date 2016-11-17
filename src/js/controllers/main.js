@@ -291,7 +291,7 @@
         }
 
         $scope.metadataFiles = function(fileListSelected){
-          var uuids = {};
+          var uuids = [];
           angular.forEach(fileListSelected, function(file){
             uuids.push(file.uuid)
           })
