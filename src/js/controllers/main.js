@@ -296,7 +296,7 @@
             uuids.push(file.model.uuid)
           })
           //alert(uuids);
-          $state.go('filemetadata-multipleadd',{uuids: uuids});
+          $state.go("filemetadata-multipleadd",{'associationIds[]': uuids, 'schemauuid':'blah'});
           /*$scope.fileMetadata.metadataSelected(fileListSelected).then(function() {
               $scope.fileNavigator.refresh();
               $scope.modal('uploadfile', true);
