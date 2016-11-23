@@ -289,21 +289,14 @@
               $scope.temp.error = errorMsg;
           });
         }
-
+        //extract the uuids from the selected files to pass to
+        //the filemetadata multiple add controller
         $scope.metadataFiles = function(fileListSelected){
           var uuids = [];
           angular.forEach(fileListSelected, function(file){
             uuids.push(file.model.uuid)
           })
-          //alert(uuids);
-          $state.go("filemetadata-multipleadd",{'associationIds[]': uuids, 'schemauuid':'blah'});
-          /*$scope.fileMetadata.metadataSelected(fileListSelected).then(function() {
-              $scope.fileNavigator.refresh();
-              $scope.modal('uploadfile', true);
-          }, function(data) {
-              var errorMsg = data.result && data.result.error || $translate.instant('error_downloading_files');
-              $scope.temp.error = errorMsg;
-          });*/
+          $state.go("filemetadata-multipleadd",{'associationIds[]': uuids});
         }
 
         $scope.deleteFiles = function(fileListSelected){
