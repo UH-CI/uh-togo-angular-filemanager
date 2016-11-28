@@ -25,6 +25,7 @@
                 rename: true,
                 metadata: true,
                 copy: true,
+                move: true,
                 edit: true,
                 changePermissions: true,
                 compress: true,
