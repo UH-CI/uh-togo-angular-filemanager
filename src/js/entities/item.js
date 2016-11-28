@@ -79,7 +79,7 @@
             })['finally'](function(data) {
                 self.inprocess = false;
             });
-        
+
             return deferred.promise;
         };
         Item.prototype.metadata = function (){
@@ -120,6 +120,27 @@
                 self.deferredHandler(data, deferred);
             }).error(function(data) {
                 self.deferredHandler(data, deferred, $translate.instant('error_copying'));
+            })['finally'](function() {
+                self.inprocess = false;
+            });
+            return deferred.promise;
+        };
+
+        Item.prototype.move = function() {
+            var self = this;
+            var deferred = $q.defer();
+            var data = {params: {
+                mode: "move",
+                path: self.model.fullPath(),
+                newPath: self.tempModel.fullPath()
+            }};
+
+            self.inprocess = true;
+            self.error = '';
+            $http.post(fileManagerConfig.moveUrl, data).success(function(data) {
+                self.deferredHandler(data, deferred);
+            }).error(function(data) {
+                self.deferredHandler(data, deferred, $translate.instant('error_moving'));
             })['finally'](function() {
                 self.inprocess = false;
             });
@@ -261,7 +282,7 @@
                 permsCode: self.tempModel.perms.toCode(),
                 recursive: self.tempModel.recursive
             }};
-            
+
             self.inprocess = true;
             self.error = '';
             $http.post(fileManagerConfig.permissionsUrl, data).success(function(data) {

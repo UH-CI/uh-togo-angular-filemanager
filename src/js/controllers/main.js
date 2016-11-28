@@ -153,6 +153,17 @@
             }
           );
         }
+        $scope.move = function(item){
+          var samePath = item.tempModel.path.join() === item.model.path.join();
+          if (samePath && $scope.fileNavigator.fileNameExists(item.tempModel.name)) {
+              item.error = $translate.instant('error_invalid_filename');
+              return false;
+          }
+          item.move().then(function() {
+              $scope.fileNavigator.refresh();
+              $scope.modal('move', true);
+          });
+        }
 
         $scope.copy = function(item) {
             var samePath = item.tempModel.path.join() === item.model.path.join();

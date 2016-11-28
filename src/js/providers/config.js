@@ -10,6 +10,7 @@
             uploadUrl: "",
             renameUrl: "",
             copyUrl: "",
+            moveUrl:"",
             removeUrl: "",
             editUrl: "",
             getContentUrl: "",
