@@ -233,7 +233,7 @@
   </div>
 </div>
 
-<div class="modal animated fadeIn" id="copy">
+<div class="modal animated fadeIn" id="move">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <form ng-submit="move(temp)">
@@ -242,23 +242,22 @@
                   <span aria-hidden="true">&times;</span>
                   <span class="sr-only">{{"close" | translate}}</span>
               </button>
-              <h4 class="modal-title">{{'move_file' | translate}}</h4>
+              <h4 class="modal-title">Move File</h4>
             </div>
             <div class="modal-body">
-              <label class="radio">{{'enter_new_name_for' | translate}} <b>{{temp.model.name}}</b></label>
-              <input class="form-control" ng-model="temp.tempModel.fullPath" autofocus="autofocus">
+
               <div class="panel panel-primary mt10 mb0">
                 <div class="panel-body">
-                    <div class="detail-sources">
-                      <code class="mr5"><b>{{"source" | translate}}:</b> {{temp.tempModel.system.id}}{{temp.model.fullPath()}}</code>
-                    </div>
+                  <div class="detail-sources">
+                    <code class="mr5"><b>Current Path:</b> {{temp.tempModel.system.id}}{{temp.model.fullPath()}}</code>
+                  </div>
                     <div class="detail-sources">
                       <code class="mr5">
-                        <b>{{"destination" | translate}}:</b>
+                        <b>New Path:</b>
                         <span ng-show="selectedSystem"> {{temp.tempModel.system.id}}{{temp.tempModel.fullPath()}}</span>
                         <span ng-show="!selectedSystem"> {{temp.tempModel.system.id}}{{temp.tempModel.fullPath()}}</span>
                       </code>
-                      <a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(temp, selectedSystem)">{{'change' | translate}}</a>
+                      <a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(temp, selectedSystem)">Select Destination Folder</a>
                     </div>
                 </div>
               </div>
@@ -272,6 +271,7 @@
     </div>
   </div>
 </div>
+
 
 <div class="modal animated fadeIn" id="compress">
   <div class="modal-dialog">
