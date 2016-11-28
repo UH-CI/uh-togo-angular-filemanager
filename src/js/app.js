@@ -11,6 +11,7 @@
       'ngCookies',
       'ngFileUpload',
       'checklist-model',
+      'schemaForm',
       'AgavePlatformScienceAPILib']);
 
     /**
