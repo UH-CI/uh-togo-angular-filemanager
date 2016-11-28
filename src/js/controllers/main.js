@@ -145,6 +145,15 @@
           );
         }
 
+        // Populate systems in move mod
+        $scope.getMoveSystems = function(){
+          SystemsController.listSystems(99999).then(
+            function (response) {
+              $scope.moveSystems = response.result;
+            }
+          );
+        }
+
         $scope.copy = function(item) {
             var samePath = item.tempModel.path.join() === item.model.path.join();
             if (samePath && $scope.fileNavigator.fileNameExists(item.tempModel.name)) {
