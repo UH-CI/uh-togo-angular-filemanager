@@ -322,6 +322,14 @@
           $state.go("filemetadata-multipleadd",{'associationIds[]': uuids});
         }
 
+        $scope.stageFilesForCopy = function(fileListSelected){
+          var uuids = [];
+          angular.forEach(fileListSelected, function(file){
+            uuids.push(file.model.uuid)
+          })
+          $state.go("file-copy",{'associationIds[]': uuids});
+        }
+
         $scope.deleteFiles = function(fileListSelected){
           $scope.fileUploader.deleteSelected(fileListSelected).then(function() {
               $scope.fileNavigator.refresh();
