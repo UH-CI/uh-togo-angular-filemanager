@@ -235,7 +235,7 @@
         $scope.timeItems = ['seconds', 'minutes', 'hours', 'days'];
         $scope.selectTime = function(time){
           $scope.timeItem = time;
-        }
+        };
         $scope.createPostit = function(item){
           item.createPostit($scope.timeItem)
           .then(
@@ -243,7 +243,11 @@
             },
             function(data){
             });
-        }
+        };
+        
+        $scope.emailPostit = function(item) {
+        	window.open('mailto:?subject=Link&body=' + item.postit.link);
+        };
 
         $scope.createFolder = function(item) {
             var name = item.tempModel.name && item.tempModel.name.trim();
