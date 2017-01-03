@@ -337,7 +337,7 @@
             uuids.push(file.model.uuid)
           })
           $scope.fileUploader.stageForRepo(uuids).then(function(){
-            $scope.fileNavigator.refresh();
+            $state.reload();
             $translate.instant('success_files_staged');
           })
           //metadata id to add file uuid to asscotionIds to 484964208339784166-242ac1110-0001-012
