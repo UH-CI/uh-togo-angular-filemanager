@@ -50,7 +50,6 @@
         $scope.get_staged_uuids = function(){
           MetaController.getMetadata('484964208339784166-242ac1110-0001-012')
             .then(function(response){
-              alert(response.result.associationIds);
               $scope.staged_uuids =  response.result.associationIds;
             })
         }
