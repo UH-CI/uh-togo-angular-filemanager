@@ -1,6 +1,6 @@
 (function(window, angular) {
     "use strict";
-    angular.module('FileManagerApp').service('fileUploader', ['$http', '$q', 'fileManagerConfig', 'Configuration', 'Upload', 'PostitsController', 'FilesController', function ($http, $q, fileManagerConfig, Configuration, Upload, PostitsController, FilesController) {
+    angular.module('FileManagerApp').service('fileUploader', ['$http', '$q', 'fileManagerConfig', 'Configuration', 'Upload', 'PostitsController', 'FilesController', 'MetaController', function ($http, $q, fileManagerConfig, Configuration, Upload, PostitsController, FilesController, MetaController) {
 
         function deferredHandler(data, deferred, errorMessage) {
             if (!data || typeof data !== 'object') {
@@ -90,6 +90,48 @@
           });
         };
 
+        this.stageFile = function(uuid, callback){
+          MetaController.getMetadata('484964208339784166-242ac1110-0001-012')
+          .then(function(response){
+              var metadatum = response.result;
+              var body = {};
+              body.associationIds = $scope.metadatum.associationIds;
+              //check if fileUuid is already associated to be stagged
+              if (body.associationIds.indexOf($scope.fileUuid) < 0) {
+                body.associationIds.push($scope.fileUuid);
+                body.name = $scope.metadatum.name;
+                body.value = $scope.metadatum.value;
+                body.schemaId = $scope.metadatum.schemaId;
+                return   MetaController.updateMetadata(body,'484964208339784166-242ac1110-0001-012').
+                 .then(function(resp) {
+                  return callback(resp.data);
+                 });
+              }
+            })
+        };
+
+        this.stageForRepo = function(fileUuids){
+          var self = this;
+          var promises = [];
+
+          angular.forEach(fileUuid, function(uuid){
+            promises.push(
+              self.stageFile(uuid, function(value){
+                self.files.push(value); //not doing anything with this at the moment
+              })
+            );
+          });
+
+          var deferred = $q.defer();
+
+          return $q.all(promises).then(
+            function(data) {
+              deferredHandler(data, deferred);
+            },
+            function(data) {
+              deferredHandler(data, deferred, $translate.instant('error_stagging_files'));
+          });
+        };
         this.download = function(file, callback) {
             var data = {
                 force: "true"

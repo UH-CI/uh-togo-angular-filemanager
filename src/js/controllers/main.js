@@ -322,12 +322,13 @@
           $state.go("filemetadata-multipleadd",{'associationIds[]': uuids});
         }
 
-        $scope.stageFilesForCopy = function(fileListSelected){
+        $scope.stageFilesForRepo = function(fileListSelected){
           var uuids = [];
           angular.forEach(fileListSelected, function(file){
             uuids.push(file.model.uuid)
           })
           $state.go("file-copy",{'associationIds[]': uuids});
+          //metadata id to add file uuid to asscotionIds to 484964208339784166-242ac1110-0001-012
         }
 
         $scope.deleteFiles = function(fileListSelected){
