@@ -90,48 +90,49 @@
           });
         };
 
-        this.stageFile = function(uuid, callback){
-          MetaController.getMetadata('484964208339784166-242ac1110-0001-012')
-          .then(function(response){
-              var metadatum = response.result;
-              var body = {};
-              body.associationIds = $scope.metadatum.associationIds;
-              //check if fileUuid is already associated to be stagged
-              if (body.associationIds.indexOf($scope.fileUuid) < 0) {
-                body.associationIds.push($scope.fileUuid);
-                body.name = $scope.metadatum.name;
-                body.value = $scope.metadatum.value;
-                body.schemaId = $scope.metadatum.schemaId;
-                return   MetaController.updateMetadata(body,'484964208339784166-242ac1110-0001-012').
-                 .then(function(resp) {
-                  return callback(resp.data);
-                 });
-              }
-            })
-        };
+        this.stageFile = function(uuids, callback){
+         MetaController.getMetadata('484964208339784166-242ac1110-0001-012')
+           .then(function(response){
+               var metadatum = response.result;
+               var body = {};
+               body.associationIds = metadatum.associationIds;
+               //check if fileUuids are already associated to be stagged
+               angular.forEach(uuids, function(uuid){
+                 if (body.associationIds.indexOf(uuid) < 0) {
+                   body.associationIds.push(uuid);
+                 }
+               })
+                 body.name = metadatum.name;
+                 body.value = metadatum.value;
+                 body.schemaId = metadatum.schemaId;
+                 return   MetaController.updateMetadata(body,'484964208339784166-242ac1110-0001-012')
+                  .then(function(resp) {
+                   return callback(resp.data);
+                  });
+             })
+         };
 
         this.stageForRepo = function(fileUuids){
-          var self = this;
-          var promises = [];
+         var self = this;
+         var promises = [];
+         //create promise for adding association to staging metadata record
+         promises.push(
+           self.stageFile(fileUuids, function(value){
+             //self.files.push(value); //not doing anything with this at the moment
+           })
+         )
 
-          angular.forEach(fileUuid, function(uuid){
-            promises.push(
-              self.stageFile(uuid, function(value){
-                self.files.push(value); //not doing anything with this at the moment
-              })
-            );
-          });
+         var deferred = $q.defer();
 
-          var deferred = $q.defer();
-
-          return $q.all(promises).then(
-            function(data) {
-              deferredHandler(data, deferred);
-            },
-            function(data) {
-              deferredHandler(data, deferred, $translate.instant('error_stagging_files'));
-          });
+         return $q.all(promises).then(
+           function(data) {
+             deferredHandler(data, deferred);
+           },
+           function(data) {
+             deferredHandler(data, deferred, $translate.instant('error_stagging_files'));
+         });
         };
+
         this.download = function(file, callback) {
             var data = {
                 force: "true"

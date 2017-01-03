@@ -327,7 +327,10 @@
           angular.forEach(fileListSelected, function(file){
             uuids.push(file.model.uuid)
           })
-          $state.go("file-copy",{'associationIds[]': uuids});
+          $scope.fileUploader.stageForRepo(uuids).then(function(){
+            $scope.fileNavigator.refresh();
+            $translate.instant('success_files_staged');
+          })
           //metadata id to add file uuid to asscotionIds to 484964208339784166-242ac1110-0001-012
         }
 
