@@ -1,8 +1,8 @@
 (function(window, angular, $) {
     "use strict";
     angular.module('FileManagerApp').controller('FileManagerCtrl', [
-    '$scope', '$state', '$rootScope', '$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader','Commons', 'SystemsController',
-        function($scope, $state, $rootScope, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, Commons, SystemsController) {
+    '$scope', '$state', '$rootScope', '$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader','Commons', 'SystemsController','MetaController',
+        function($scope, $state, $rootScope, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, Commons, SystemsController,MetaController) {
         $scope.config = fileManagerConfig;
         $scope.appName = fileManagerConfig.appName;
         $scope.modes = ['Javascript', 'Shell', 'XML', 'Markdown', 'CLike', 'Python'];
@@ -46,6 +46,14 @@
         $scope.fileUploader = FileUploader;
         $scope.uploadFileList = [];
         $scope.viewTemplate = $cookies.viewTemplate || 'main-table.html';
+
+        $scope.get_staged_uuids = function(){
+          MetaController.getMetadata('484964208339784166-242ac1110-0001-012')
+            .then(function(response){
+              $scope.staged_uuids =  response.result.associationIds;
+            })
+        }
+        $scope.get_staged_uuids();
 
         $scope.setTemplate = function(name) {
             $scope.viewTemplate = $cookies.viewTemplate = name;
@@ -324,6 +332,18 @@
             uuids.push(file.model.uuid)
           })
           $state.go("filemetadata-multipleadd",{'associationIds[]': uuids});
+        }
+
+        $scope.stageFilesForRepo = function(fileListSelected){
+          var uuids = [];
+          angular.forEach(fileListSelected, function(file){
+            uuids.push(file.model.uuid)
+          })
+          $scope.fileUploader.stageForRepo(uuids).then(function(){
+            $state.reload();
+            $translate.instant('success_files_staged');
+          })
+          //metadata id to add file uuid to asscotionIds to 484964208339784166-242ac1110-0001-012
         }
 
         $scope.deleteFiles = function(fileListSelected){

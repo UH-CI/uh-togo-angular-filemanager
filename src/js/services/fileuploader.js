@@ -1,6 +1,6 @@
 (function(window, angular) {
     "use strict";
-    angular.module('FileManagerApp').service('fileUploader', ['$http', '$q', 'fileManagerConfig', 'Configuration', 'Upload', 'PostitsController', 'FilesController', function ($http, $q, fileManagerConfig, Configuration, Upload, PostitsController, FilesController) {
+    angular.module('FileManagerApp').service('fileUploader', ['$http', '$q', 'fileManagerConfig', 'Configuration', 'Upload', 'PostitsController', 'FilesController', 'MetaController', function ($http, $q, fileManagerConfig, Configuration, Upload, PostitsController, FilesController, MetaController) {
 
         function deferredHandler(data, deferred, errorMessage) {
             if (!data || typeof data !== 'object') {
@@ -88,6 +88,49 @@
           ['finally'](function (data) {
             self.requesting = false;
           });
+        };
+
+        this.stageFile = function(uuids, callback){
+         MetaController.getMetadata('484964208339784166-242ac1110-0001-012')
+           .then(function(response){
+               var metadatum = response.result;
+               var body = {};
+               body.associationIds = metadatum.associationIds;
+               //check if fileUuids are already associated to be stagged
+               angular.forEach(uuids, function(uuid){
+                 if (body.associationIds.indexOf(uuid) < 0) {
+                   body.associationIds.push(uuid);
+                 }
+               })
+                 body.name = metadatum.name;
+                 body.value = metadatum.value;
+                 body.schemaId = metadatum.schemaId;
+                 return   MetaController.updateMetadata(body,'484964208339784166-242ac1110-0001-012')
+                  .then(function(resp) {
+                   return callback(resp.data);
+                  });
+             })
+         };
+
+        this.stageForRepo = function(fileUuids){
+         var self = this;
+         var promises = [];
+         //create promise for adding association to staging metadata record
+         promises.push(
+           self.stageFile(fileUuids, function(value){
+             //self.files.push(value); //not doing anything with this at the moment
+           })
+         )
+
+         var deferred = $q.defer();
+
+         return $q.all(promises).then(
+           function(data) {
+             deferredHandler(data, deferred);
+           },
+           function(data) {
+             deferredHandler(data, deferred, $translate.instant('error_stagging_files'));
+         });
         };
 
         this.download = function(file, callback) {
