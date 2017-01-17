@@ -105,6 +105,13 @@
                  body.name = metadatum.name;
                  body.value = metadatum.value;
                  body.schemaId = metadatum.schemaId;
+                 body.rejected = metadatum.rejected;
+                 //if uuid was rejected before remove it
+                 angular.forEach(body.rejected, function(rejected_uuid){
+                   if (body.associationIds.indexOf(rejected uuid) < 0) {
+                     body.associationIds.push(rejected_uuid);
+                   }
+                 })
                  return   MetaController.updateMetadata(body,'484964208339784166-242ac1110-0001-012')
                   .then(function(resp) {
                    return callback(resp.data);
