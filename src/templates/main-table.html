@@ -9,16 +9,16 @@
                         <i class="fa fa-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li ng-if="!app.available">
+                        <li ng-if="!app.available && item.model.system.default">
                             <a ng-click="metadataFiles(fileNavigator.fileListSelected)"> <i class="fa fa-tag"></i> Add Metadata</a>
                         </li>
-                        <li ng-if="!app.available">
+                        <li ng-if="!app.available && item.model.system.default">
                             <a ng-click="stageFilesForRepo(fileNavigator.fileListSelected)"> <i class="fa fa-star-half-o"></i> Stage For Repository</a>
                         </li>
                         <li ng-if="!app.available">
                             <a ng-click="downloadFiles(fileNavigator.fileListSelected)"> <i class="fa fa-download"></i> Download</a>
                         </li>
-                        <li>
+                        <li ng-if="item.model.system.default">>
                             <a ng-click="deleteFiles(fileNavigator.fileListSelected)"> <i class="fa fa-trash"></i> Delete </a>
                         </li>
                     </ul>
