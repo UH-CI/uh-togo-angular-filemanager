@@ -53,8 +53,17 @@
               $scope.staged_uuids =  response.result.associationIds;
             })
         }
-        $scope.get_staged_uuids();
+        $scope.get_published_uuids = function(){
+          MetaController.getMetadata('4516085960163594726-242ac1110-0001-012')
+            .then(function(response){
+              $scope.published_uuids =  response.result.associationIds;
+            })
+        }
 
+
+        $scope.get_staged_uuids();
+        $scope.get_published_uuids();
+        
         $scope.setTemplate = function(name) {
             $scope.viewTemplate = $cookies.viewTemplate = name;
         };
@@ -252,7 +261,7 @@
             function(data){
             });
         };
-        
+
         $scope.emailPostit = function(item) {
         	window.open('mailto:?subject=Link&body=' + item.postit.link);
         };
