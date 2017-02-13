@@ -96,6 +96,7 @@
             <td ng-if="item.model.system.default" class="hidden-sm hidden-xs" >
 
               {{ staged_uuids.indexOf(item.model.uuid) >= 0 ? 'Staged' : ''}}
+              {{ published_uuids.indexOf(item.model.uuid) >= 0 ? 'Published' : ''}}
             </td>
             <!-- <td class="text-right" ng-if="config.allowedActions.agaveUpload && config.allowedActions.agaveSelect">
                 <div ng-include="config.tplPath + '/item-toolbar.html'"></div>
