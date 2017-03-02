@@ -162,6 +162,7 @@
                        </div>
                      </div>
                    </div>
+                   <!-- Show the panel that has the path to the file the user is sharing -->
                     <div class="panel panel-primary mt10 mb0">
                         <div class="panel-body">
                             <div class="detail-sources">
@@ -169,10 +170,12 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Show the panel that has the link that is auto-generated when the user clicks 'Create' -->
                     <div class="panel panel-primary mt10 mb0 text-center" ng-show="temp.postit.link">
                         <div class="panel-body">
                           <div class="detail-sources">
-                              <code><a ng-href="{{temp.postit.link}}" target="_blank" class="mr5"> {{temp.postit.link}}</a></code>
+                              <code>{{"Success!  Here's the link, please email or copy it for future use:" | translate}} <a ng-href="{{temp.postit.link}}" target="_blank" class="mr5"> 
+                              {{temp.postit.link}}</a></code>
                           </div>
 
                         </div>
@@ -180,8 +183,11 @@
                     <div ng-include data-src="'error-bar'" class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
-                    <button type="submit" class="btn btn-primary" ng-disabled="temp.inprocess">{{'Create' | translate}}</button>
+                    <button type="button" ng-show="temp.postit.link" class="btn btn-default" ng-click="emailPostit(temp)"  ng-disabled="temp.inprocess">{{"Email" | translate}}</button>
+                    <button id="copy-clip-button" data-clipboard-text="{{temp.postit.link}}" type="button" ng-show="temp.postit.link" class="btn btn-default" ng-disabled="temp.inprocess">{{"Copy to clipboard" | translate}}</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"Close" | translate}}</button>
+                    <button type="submit" ng-show="!temp.postit.link" class="btn btn-primary" ng-disabled="temp.inprocess">{{'Create' | translate}}</button>
+                    <button type="submit" ng-show="temp.postit.link" class="btn btn-primary" ng-disabled="temp.inprocess">{{'Create another link' | translate}}</button>
                 </div>
             </form>
         </div>
