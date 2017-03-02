@@ -1,6 +1,9 @@
 
+  <!-- 
   <div class="caption">
-    <i class="fa fa-server"></i> {{ system.name }} : {{ fileNavigator.currentPath.join('/') || '/' }} </div>
+    <i class="fa fa-server"></i> {{ system.name }} : {{ fileNavigator.currentPath.join('/') || '/' }} 
+  </div>
+  -->
   <div class="actions">
     <input type="text" class="form-control hide" placeholder="{{'search' | translate}}..." ng-model="$parent.query">
     <button ng-if="system.default" class="btn btn-outline red" data-toggle="modal" data-target="#newfolder" ng-click="touch()" ng-hide="upload">

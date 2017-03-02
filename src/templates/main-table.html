@@ -94,8 +94,10 @@
                 {{ item.model.size | humanSize:1:true }}
             </td>
             <!-- <td class="hidden-sm hidden-xs" am-time-ago="item.model.date"> -->
-            <td class="hidden-sm hidden-xs">
-              <time>{{ item.model.date | amDateFormat: 'MM/DD/YY, h:mm a' }}</time>
+            <td class="hidden-sm hidden-xs" ng-show="item.model.type === 'file'">
+              <time>{{ item.model.date | amDateFormat: 'MM/DD/YY, h:mm a' }}</time> 
+            </td>
+            <td class="hidden-sm hidden-xs" ng-show="item.model.type === 'dir'">
             </td>
             <!--
             <td class="hidden-sm hidden-xs" >
