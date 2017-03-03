@@ -79,6 +79,8 @@
             item = item instanceof fileItem ? item : new fileItem(null, null, $scope.system);
             item.revert && item.revert();
             $scope.temp = item;
+            $scope.temp.postit.lifetime = 30; // pre-set the values on the postits modal
+            $scope.temp.postit.maxUses = 1;   // pre-set the values on the postits modal
         };
 
         $scope.smartClick = function(item) {
@@ -247,8 +249,8 @@
             });
         };
 
-        // postits
-        $scope.timeItem = '';
+        // start of postits
+        $scope.timeItem = 'days';
         $scope.timeItems = ['seconds', 'minutes', 'hours', 'days'];
         $scope.selectTime = function(time){
           $scope.timeItem = time;
@@ -265,7 +267,8 @@
         $scope.emailPostit = function(item) {
         	window.open('mailto:?subject=Link&body=' + item.postit.link);
         };
-
+        // end of postits
+        
         $scope.createFolder = function(item) {
             var name = item.tempModel.name && item.tempModel.name.trim();
             item.tempModel.type = 'dir';
