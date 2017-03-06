@@ -90,7 +90,10 @@
                     {{item.model.name | strLimit : 64}}
                 </a>
             </td>
-            <td class="hidden-xs">
+            <td class="hidden-xs" ng-show="item.model.type === 'dir'">
+                &nbsp;
+            </td>
+            <td class="hidden-xs" ng-show="item.model.type === 'file'">
                 {{ item.model.size | humanSize:1:true }}
             </td>
             <!-- <td class="hidden-sm hidden-xs" am-time-ago="item.model.date"> -->
