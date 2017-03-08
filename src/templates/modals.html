@@ -122,8 +122,8 @@
             <div class="modal-footer">
               <div class="col-lg-12 text-center" ng-show="!temp.inprocess">
                 <button type="button" class="btn btn-success text-center" ng-show="!temp.tempModel.preview.isEdit" ng-disabled="temp.inprocess" ng-click="download(temp)"><i class="fa fa-download"></i> {{"download" | translate}}</button>
-                <button type="button" class="btn btn-success text-center" ng-show="temp.tempModel.preview.isEdit" ng-disabled="temp.inprocess" ng-click="editSave(temp)"><i class="fa fa-floppy-o"></i> {{"save" | translate}}</button>
-                <button type="button" class="btn btn-primary text-center" ng-show="temp.tempModel.preview.isText && temp.tempModel.preview.isPreviewable" ng-disabled="temp.inprocess" ng-click="temp.getContent();temp.tempModel.preview.isEdit = true; temp.tempModel.preview.isText = false;"><i class="fa fa-pencil"></i>{{"edit" | translate}}</button>
+                <button type="button" class="btn btn-success text-center" ng-show="temp.tempModel.preview.isEdit && system.default" ng-disabled="temp.inprocess" ng-click="editSave(temp)"><i class="fa fa-floppy-o"></i> {{"save" | translate}}</button>
+                <button type="button" class="btn btn-primary text-center" ng-show="temp.tempModel.preview.isText && temp.tempModel.preview.isPreviewable && system.default" ng-disabled="temp.inprocess" ng-click="temp.getContent();temp.tempModel.preview.isEdit = true; temp.tempModel.preview.isText = false;"><i class="fa fa-pencil"></i>{{"edit" | translate}}</button>
                 <button type="button" class="btn btn-default tex-center" data-dismiss="modal" ng-disabled="temp.inprocess">{{"close" | translate}}</button>
               </div>
             </div>
