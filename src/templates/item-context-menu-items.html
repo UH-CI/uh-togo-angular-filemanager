@@ -4,7 +4,7 @@
         <li ng-show="config.allowedActions.move && !temp.isFolder() && system.default"><a href="" tabindex="-1" data-toggle="modal" data-target="#move" ng-click="getMoveSystems()"><i class="fa fa-folder-open-o"></i> {{'move' | translate}}</a></li>
         <!-- <li ng-show="config.allowedActions.edit && temp.isEditable()"><a href="" tabindex="-1" ng-click="edit(temp)"><i class="fa fa-pencil"></i> {{'edit' | translate}}</a></li> -->
         <li ng-show="config.allowedActions.compress && temp.isCompressible() && system.default && !temp.isFolder()"><a href="" tabindex="-1" data-toggle="modal" data-target="#compress"><i class="glyphicon glyphicon-compressed"></i> {{'compress' | translate}}</a></li>
-        <li ng-show="config.allowedActions.extract && temp.isExtractable() && system.default"><a href="" tabindex="-1" data-toggle="modal" data-target="#extract" ng-click="temp.tempModel.name=''"><i class="glyphicon glyphicon-export"></i> {{'extract' | translate}}</a></li>
+        <!-- <li ng-show="config.allowedActions.extract && temp.isExtractable() && system.default"><a href="" tabindex="-1" data-toggle="modal" data-target="#extract" ng-click="temp.tempModel.name=''"><i class="glyphicon glyphicon-export"></i> {{'extract' | translate}}</a></li> -->
         <li ng-show="config.allowedActions.download && !temp.isFolder()"><a href="" tabindex="-1" ng-click="temp.download()"><i class="fa fa-download"></i> {{'download' | translate}}</a></li>
         <li ng-show="config.allowedActions.preview && !temp.isFolder()"><a href="" tabindex="-1" data-toggle="modal" data-target="#preview" ng-click="temp.download(true)"><i class="fa fa-eye"></i> {{'preview' | translate}}</a></li>
         <li ng-show="!temp.isFolder()" class="divider"></li>
