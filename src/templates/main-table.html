@@ -125,7 +125,7 @@
             </td>
 
             <td class="text-center" ng-click="touch(item)">
-               <div class="btn-group">
+               <div ng-if="item.model.type === 'file' || system.default" class="btn-group" class="btn-group">
                    <a class="btn red btn-outline" href="#" data-toggle="dropdown">
                        Actions
                        <i class="fa fa-angle-down"></i>
