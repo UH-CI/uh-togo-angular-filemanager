@@ -58,13 +58,12 @@
                   <span aria-hidden="true">&times;</span>
                   <span class="sr-only">{{"close" | translate}}</span>
               </button>
-              <h4 class="modal-title">{{'change_name_move' | translate}}</h4>
+              <h4 class="modal-title">{{'rename' | translate}}</h4>
             </div>
             <div class="modal-body">
               <label class="radio">{{'enter_new_name_for' | translate}} <b>{{temp.model.name}}</b></label>
               <input class="form-control" ng-model="temp.tempModel.name" autofocus="autofocus">
 
-              <div ng-include data-src="'path-selector'" class="clearfix"></div>
               <div ng-include data-src="'error-bar'" class="clearfix"></div>
             </div>
             <div class="modal-footer">
@@ -174,7 +173,7 @@
                     <div class="panel panel-primary mt10 mb0 text-center" ng-show="temp.postit.link">
                         <div class="panel-body">
                           <div class="detail-sources">
-                              <code>{{"Success!  Here's the link, please email or copy it for future use:" | translate}} <a ng-href="{{temp.postit.link}}" target="_blank" class="mr5"> 
+                              <code>{{"Success!  Here's the link, please email or copy it for future use:" | translate}} <a ng-href="{{temp.postit.link}}" target="_blank" class="mr5">
                               {{temp.postit.link}}</a></code>
                           </div>
 
