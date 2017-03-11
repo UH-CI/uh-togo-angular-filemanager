@@ -20,6 +20,43 @@
 
         this.files = [];
 
+        this.moveFile = function(file, new_path, callback){
+        //  var samePath = file.tempModel.path.join() === file.model.path.join();
+        //  if (samePath && fileNavigator.fileNameExists(file.tempModel.name)) {
+        //      item.error = $translate.instant('error_invalid_filename');
+        //      return false;
+        //    }
+          file.tempModel.path = new_path.split('/');
+          return file.move().then(function(resp) {
+              return callback(resp.data);
+          });
+
+        }
+
+        this.moveSelected = function(fileListSelected, new_path){
+          var self = this;
+          var promises = [];
+
+          angular.forEach(fileListSelected, function(file){
+            promises.push(
+              self.moveFile(file, new_path, function(value){
+                self.files.push(value);
+              })
+            );
+          });
+
+          var deferred = $q.defer();
+
+          return $q.all(promises).then(
+            function(data) {
+              deferredHandler(data, deferred, 'Files Moved Successfully');
+            },
+            function(data) {
+              deferredHandler(data, deferred, 'error_moving_files');
+          });
+
+        }
+
         this.uploadFile = function(file, form, filesUri, callback) {
           var self = this;
 

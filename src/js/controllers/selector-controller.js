@@ -16,8 +16,10 @@
         $rootScope.select = function(item, temp) {
             if (item.model.root === true){
                temp.tempModel.path = item.model.path;
+               angular.element('#groupfilepath').val("/"+item.model.path.join('/'));
             } else {
                temp.tempModel.path = item.model.fullPath().split('/');
+               angular.element('#groupfilepath').val(item.model.fullPath());
             }
             $('#selector').modal('hide');
         };

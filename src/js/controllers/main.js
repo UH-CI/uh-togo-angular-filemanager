@@ -63,7 +63,7 @@
 
         $scope.get_staged_uuids();
         $scope.get_published_uuids();
-        
+
         $scope.setTemplate = function(name) {
             $scope.viewTemplate = $cookies.viewTemplate = name;
         };
@@ -268,7 +268,7 @@
         	window.open('mailto:?subject=Link&body=' + item.postit.link);
         };
         // end of postits
-        
+
         $scope.createFolder = function(item) {
             var name = item.tempModel.name && item.tempModel.name.trim();
             item.tempModel.type = 'dir';
@@ -368,6 +368,19 @@
           });
         }
 
+        $scope.groupfilesmove = function(fileListSelected){
+          $scope.requesting = true;
+          var new_path = angular.element('#groupfilepath').val();
+          $scope.fileUploader.moveSelected(fileListSelected, new_path).then(function() {
+              $scope.requesting = true;
+              $scope.fileNavigator.refresh();
+              $scope.modal('groupfilesmove', true);
+          }, function(data) {
+              var errorMsg = data.result && data.result.error || $translate.instant('error_moving_files');
+              $scope.temp.error = errorMsg;
+          });
+        }
+        
         $scope.getQueryParam = function(param) {
             var found;
             window.location.search.substr(1).split("&").forEach(function(item) {
