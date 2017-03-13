@@ -340,12 +340,13 @@
         //the filemetadata multiple add controller
         $scope.metadataFiles = function(fileListSelected){
           var uuids = [];
+          var paths =[]
           angular.forEach(fileListSelected, function(file){
             uuids.push(file.model.uuid)
+            paths.push(file.model.fullPath())
           })
-          $state.go("filemetadata-multipleadd",{'associationIds[]': uuids});
+          $state.go("filemetadata-multipleadd",{'fileUuids': uuids,'filePaths':paths});
         }
-
         $scope.stageFilesForRepo = function(fileListSelected){
           var uuids = [];
           angular.forEach(fileListSelected, function(file){
@@ -380,7 +381,7 @@
               $scope.temp.error = errorMsg;
           });
         }
-        
+
         $scope.getQueryParam = function(param) {
             var found;
             window.location.search.substr(1).split("&").forEach(function(item) {
