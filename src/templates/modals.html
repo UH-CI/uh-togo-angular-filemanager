@@ -17,7 +17,7 @@
                         <div>
                           <form  class="move-files-form">
                             <b>Current Path:</b> <input id="currentpath" type="text" size="60" value="{{fileNavigator.fileListSelected[0].model.fullPath().split('/').slice(1,-1).join('/')}}" disabled /><br/>
-                            <b>New Path:</b> <input id="groupfilepath" type="text" size="60" value="/{{fileNavigator.fileListSelected[0].tempModel.fullPath().split('/').slice(1,-1).join('/')}}" disabled /><a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(fileNavigator.fileListSelected[0], selectedSystem)">Select Destination Folder</a>
+                            <b>New Path:</b> <input id="groupfilepath" type="text" size="60" value="/{{fileNavigator.fileListSelected[0].tempModel.fullPath().split('/').slice(1,-1).join('/')}}" disabled /><a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(fileNavigator.fileListSelected[0], system)">Select Destination Folder</a>
                           </form>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
-              <button type="submit" class="btn btn-primary"  ng-click="groupfilesmove(fileNavigator.fileListSelected)">Move Files</button>
+              <button id="movefilebutton" type="submit" class="btn btn-primary"  ng-click="groupfilesmove(fileNavigator.fileListSelected)">Move Files</button>
             </div>
         </form>
     </div>
