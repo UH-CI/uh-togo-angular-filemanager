@@ -26,7 +26,7 @@
               <div ng-include data-src="'error-bar'" class="clearfix"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
               <button type="submit" class="btn btn-primary"  ng-click="groupfilesmove(fileNavigator.fileListSelected)">Move Files</button>
             </div>
         </form>
@@ -53,7 +53,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
         <button type="submit" class="btn btn-primary" ng-disabled="temp.inprocess" autofocus="autofocus">{{"save" | translate}}</button>
       </div>
       </form>
@@ -77,7 +77,7 @@
         <div ng-include data-src="'error-bar'" class="clearfix"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
         <button type="submit" class="btn btn-primary" ng-disabled="temp.inprocess" autofocus="autofocus">{{"remove" | translate}}</button>
       </div>
       </form>
@@ -101,7 +101,7 @@
         <div ng-include data-src="'error-bar'" class="clearfix"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
         <button type="button" class="btn btn-primary" ng-disabled="temp.inprocess" autofocus="autofocus" ng-click="deleteFiles(fileNavigator.fileListSelected)" data-dismiss="modal">{{"remove" | translate}} </button>
       </div>
       </form>
@@ -127,7 +127,7 @@
               <div ng-include data-src="'error-bar'" class="clearfix"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
               <button type="submit" class="btn btn-primary" ng-disabled="temp.inprocess">{{'rename' | translate}}</button>
             </div>
         </form>
@@ -181,10 +181,11 @@
             </div>
             <div class="modal-footer">
               <div class="col-lg-12 text-center" ng-show="!temp.inprocess">
+                <button type="button" class="btn btn-default tex-center" data-dismiss="modal" ng-disabled="temp.inprocess">{{"close" | translate}}</button>
                 <button type="button" class="btn btn-success text-center" ng-show="!temp.tempModel.preview.isEdit" ng-disabled="temp.inprocess" ng-click="download(temp)"><i class="fa fa-download"></i> {{"download" | translate}}</button>
                 <button type="button" class="btn btn-success text-center" ng-show="temp.tempModel.preview.isEdit && system.default" ng-disabled="temp.inprocess" ng-click="editSave(temp)"><i class="fa fa-floppy-o"></i> {{"save" | translate}}</button>
                 <button type="button" class="btn btn-primary text-center" ng-show="temp.tempModel.preview.isText && temp.tempModel.preview.isPreviewable && system.default" ng-disabled="temp.inprocess" ng-click="temp.getContent();temp.tempModel.preview.isEdit = true; temp.tempModel.preview.isText = false;"><i class="fa fa-pencil"></i>{{"edit" | translate}}</button>
-                <button type="button" class="btn btn-default tex-center" data-dismiss="modal" ng-disabled="temp.inprocess">{{"close" | translate}}</button>
+
               </div>
             </div>
     </div>
@@ -244,7 +245,7 @@
                 <div class="modal-footer">
                     <button type="button" ng-show="temp.postit.link" class="btn btn-default" ng-click="emailPostit(temp)"  ng-disabled="temp.inprocess">{{"Email" | translate}}</button>
                     <button id="copy-clip-button" data-clipboard-text="{{temp.postit.link}}" type="button" ng-show="temp.postit.link" class="btn btn-default" ng-disabled="temp.inprocess">{{"Copy to clipboard" | translate}}</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"Close" | translate}}</button>
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"Close" | translate}}</button>
                     <button type="submit" ng-show="!temp.postit.link" class="btn btn-primary" ng-disabled="temp.inprocess">{{'Create' | translate}}</button>
                     <button type="submit" ng-show="temp.postit.link" class="btn btn-primary" ng-disabled="temp.inprocess">{{'Create another link' | translate}}</button>
                 </div>
@@ -290,7 +291,7 @@
               <div ng-include data-src="'error-bar'" class="clearfix"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
               <button type="submit" class="btn btn-primary" ng-disabled="temp.inprocess">Copy</button>
             </div>
         </form>
@@ -329,7 +330,7 @@
               <div ng-include data-src="'error-bar'" class="clearfix"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
               <button type="submit" class="btn btn-primary" ng-disabled="temp.inprocess">Move</button>
             </div>
         </form>
@@ -370,7 +371,7 @@
                   <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"close" | translate}}</button>
               </div>
               <div ng-hide="temp.asyncSuccess">
-                  <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
+                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
                   <button type="submit" class="btn btn-primary" ng-disabled="temp.inprocess">{{'compress' | translate}}</button>
               </div>
             </div>
@@ -406,7 +407,7 @@
                   <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"close" | translate}}</button>
               </div>
               <div ng-hide="temp.asyncSuccess">
-                  <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
+                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
                   <button type="submit" class="btn btn-primary" ng-disabled="temp.inprocess">{{'extract' | translate}}</button>
               </div>
             </div>
@@ -442,7 +443,7 @@
                 <div ng-include data-src="'error-bar'" class="clearfix"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
               <button type="submit" class="btn btn-primary" ng-disabled="temp.inprocess">{{'Save' | translate}}</button>
             </div>
         </form>
@@ -467,7 +468,7 @@
               <div ng-include data-src="'error-bar'" class="clearfix"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
               <button type="submit" class="btn btn-primary" ng-disabled="temp.inprocess">{{'create' | translate}}</button>
             </div>
         </form>
@@ -520,7 +521,7 @@
             </div>
             <div class="modal-footer">
               <div ng-show="!fileUploader.requesting">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">{{"cancel" | translate}}</button>
+                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{"cancel" | translate}}</button>
                   <button type="submit" class="btn btn-primary" ng-disabled="!uploadFileList.length || fileUploader.requesting">{{'upload' | translate}}</button>
               </div>
             </div>
@@ -635,7 +636,7 @@
           <div ng-include data-src="'error-bar'" class="clearfix"></div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">{{"cancel" | translate}}</button>
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{"cancel" | translate}}</button>
           <button type="submit" class="btn btn-primary" ng-disabled="">{{'change' | translate}}</button>
         </div>
       </form>
@@ -660,7 +661,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"close" | translate}}</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"close" | translate}}</button>
       </div>
     </div>
   </div>
