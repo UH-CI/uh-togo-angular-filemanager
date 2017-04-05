@@ -23,6 +23,14 @@
                     }
                         return ('/' + this.path.join('/') + '/' + this.name).replace(/\/\//g, '/');
                 },
+                fullPathNoFile: function() {
+                    if (this.path.length == 1 && this.path[0] === '/'){
+                        return ('/');
+                    }
+                    else {
+                        return ('/' + this.path.join('/')).replace(/\/\//g, '/');           
+                    }
+                },
                 crumbsPath: function(){
                     //There's the possiblitiy that this does extra replaces.
                     //TODO: Use regular expressions or return this path from the server.

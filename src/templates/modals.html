@@ -10,24 +10,53 @@
               <h4 class="modal-title">Move Files</h4>
             </div>
             <div class="modal-body">
-
+				<table>
+					<tbody>
+						<tr ng-repeat="item in fileNavigator.fileListSelected">
+                           <td>{{item.model.name}}</td>
+						</tr>
+					</tbody>
+				</table>
+				
               <div class="panel panel-primary mt10 mb0">
                 <div class="panel-body">
-                    <div class="detail-sources">
+                <table>
+                	<tbody>
+                		<tr>
+                			<td>
+                                <b>Current Location:</b> <input id="currentpath" style="border: 0px;background: none;" readonly=true type="text" size="60" value="{{fileNavigator.fileListSelected[0].model.fullPath().split('/').slice(1,-1).join('/')}}" disabled /><br/>
+                            </td>
+                		</tr>
+                		<tr>
+                			<td>
+                			    <b>New Location:</b> <input id="groupfilepath" style="border: 0px;background: none;" readonly=true  type="text" size="60" value="/{{fileNavigator.fileListSelected[0].tempModel.fullPath().split('/').slice(1,-1).join('/')}}" disabled />                       	</td>
+                		</tr>
+                		<tr>
+                			<td>
+                            	<a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(fileNavigator.fileListSelected[0], selectedSystem)">Select New Location</a>
+                			
+                			</td>
+                		</tr>         		
+                	</tbody>
+                </table>
+                    <!-- 
+                      <div class="detail-sources">
                         <div>
                           <form  class="move-files-form">
                             <b>Current Path:</b> <input id="currentpath" type="text" size="60" value="{{fileNavigator.fileListSelected[0].model.fullPath().split('/').slice(1,-1).join('/')}}" disabled /><br/>
-                            <b>New Path:</b> <input id="groupfilepath" type="text" size="60" value="/{{fileNavigator.fileListSelected[0].tempModel.fullPath().split('/').slice(1,-1).join('/')}}" disabled /><a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(fileNavigator.fileListSelected[0], selectedSystem)">Select Destination Folder</a>
+                            <b>New Path:</b> <input id="groupfilepath" type="text" size="60" value="/{{fileNavigator.fileListSelected[0].tempModel.fullPath().split('/').slice(1,-1).join('/')}}" disabled />
+                            <a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(fileNavigator.fileListSelected[0], selectedSystem)">Select Destination Folder</a>
                           </form>
                         </div>
                     </div>
+                    -->
                 </div>
               </div>
               <div ng-include data-src="'error-bar'" class="clearfix"></div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
-              <button type="submit" class="btn btn-primary"  ng-click="groupfilesmove(fileNavigator.fileListSelected)">Move Files</button>
+              <button type="submit" class="btn btn-primary"  ng-click="groupfilesmove(fileNavigator.fileListSelected)">{{"Move" | translate}}</button>
             </div>
         </form>
     </div>
@@ -311,9 +340,32 @@
               <h4 class="modal-title">Move File</h4>
             </div>
             <div class="modal-body">
-
+                {{temp.tempModel.name}}
               <div class="panel panel-primary mt10 mb0">
                 <div class="panel-body">
+                <table>
+                	<tbody>
+                		<tr>
+                			<td>
+                			    <!-- <b>Current Location:</b> {{temp.tempModel.system.id}}{{temp.model.fullPath()}} -->
+                				<b>Current Location:</b> {{temp.model.fullPathNoFile()}}
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>
+                			    <!-- <b>New Location:</b> {{temp.tempModel.system.id}}{{temp.tempModel.fullPath()}} -->
+                				<b>New Location:</b> {{temp.tempModel.fullPathNoFile()}}
+                			</td>
+                		</tr>
+                		<tr>
+                			<td>
+                				<a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(temp, selectedSystem)">Change New Location</a>
+                			</td>
+                		</tr>         		
+                	</tbody>
+                </table>
+                
+                <!-- 
                   <div class="detail-sources">
                     <code class="mr5"><b>Current Path:</b> {{temp.tempModel.system.id}}{{temp.model.fullPath()}}</code>
                   </div>
@@ -323,8 +375,11 @@
                         <span ng-show="selectedSystem"> {{temp.tempModel.system.id}}{{temp.tempModel.fullPath()}}</span>
                         <span ng-show="!selectedSystem"> {{temp.tempModel.system.id}}{{temp.tempModel.fullPath()}}</span>
                       </code>
-                      <a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(temp, selectedSystem)">Select Destination Folder</a>
+                      <div>
+                        <a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(temp, selectedSystem)">Select Destination Folder</a>
+                      </div>
                     </div>
+                     -->
                 </div>
               </div>
               <div ng-include data-src="'error-bar'" class="clearfix"></div>
@@ -652,7 +707,7 @@
             <span aria-hidden="true">&times;</span>
             <span class="sr-only">{{"close" | translate}}</span>
         </button>
-        <h4 class="modal-title">{{"select_destination_folder" | translate}}</h4>
+        <h4 class="modal-title">{{"select_destination_location" | translate}}</h4>
       </div>
       <div class="modal-body">
         <div>
@@ -661,7 +716,9 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"close" | translate}}</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"close" | translate}}</button>  
+        <button type="button" class="btn btn-primary" ng-disabled="temp.inprocess" ng-click="$root.folderClickAndHide(temp)">{{"Use selected location" | translate}}</button>  
+
       </div>
     </div>
   </div>

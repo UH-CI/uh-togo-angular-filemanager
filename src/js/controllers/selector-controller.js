@@ -14,6 +14,12 @@
         $scope.fileNavigator = new FileNavigator();
 
         $rootScope.select = function(item, temp) {
+        	$rootScope.selectNoHide(item, temp);
+            $('#selector').modal('hide');
+        };
+        
+        // used by $rootScope.folderClickNoHide and $rootScope.select
+        $rootScope.selectNoHide = function(item, temp) {
             if (item.model.root === true){
                temp.tempModel.path = item.model.path;
                angular.element('#groupfilepath').val("/"+item.model.path.join('/'));
@@ -21,7 +27,19 @@
                temp.tempModel.path = item.model.fullPath().split('/');
                angular.element('#groupfilepath').val(item.model.fullPath());
             }
-            $('#selector').modal('hide');
+        };
+        
+        // called by main-table-modal.html when user clicks on a folder
+        $rootScope.folderClickNoHide = function(item, temp) {
+        	$scope.fileNavigator.folderClick(item);
+        	$rootScope.selectNoHide(item, temp);
+        };
+        
+        // triggered by 'use selected folder' in selector modal in modals.html file
+        $rootScope.folderClickAndHide = function(temp) {    	
+	        var item = $scope.fileNavigator.fileList[0];
+	        $scope.fileNavigator.folderClick(item);
+	        $rootScope.select(item, temp);
         };
 
         $rootScope.openNavigator = function(item, system) {
@@ -31,6 +49,9 @@
           } else {
             $scope.fileNavigator.system = item.model.system;
             $scope.fileNavigator.currentPath = item.model.path.slice();
+            // make the breadcrumbs match the folder we are currently showing
+            //$scope.fileNavigator.crumbsPath = item.model.crumbsPath().splice(1);
+            $scope.fileNavigator.crumbsPath = $scope.fileNavigator.currentPath;
           }
 
           $scope.fileNavigator.refresh();

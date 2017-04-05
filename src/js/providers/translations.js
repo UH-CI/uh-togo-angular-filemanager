@@ -18,6 +18,7 @@
             uploading: "Uploading",
             permissions: "Permissions",
             select_destination_folder: "Select the destination folder",
+            select_destination_location: "Select the destination location",
             source: "Source",
             destination: "Destination",
             copy_file: "Copy file",
