@@ -41,6 +41,8 @@
             upload: "Upload",
             change_permissions: "Change permissions",
             change: "Change",
+            select_new_location: "Select new location",
+            use_selected_location: "Use selected location",
             details: "Details",
             icons: "Icons",
             list: "List",

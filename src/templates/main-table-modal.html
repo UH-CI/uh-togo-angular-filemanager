@@ -26,8 +26,7 @@
        <tr ng-repeat="item in fileNavigator.fileList"
           ng-show="!fileNavigator.requesting && !item.model.root && item.model.type === 'dir' && fileNavigator.listHasFolders()">
             <td>
-                <!-- <a href="" ng-click="fileNavigator.folderClick(item)" -->
-                <a href="" ng-click="$root.folderClickNoHide(item, temp)"
+                <a href="" ng-click="fileNavigator.folderClick(item)"
                    title="{{item.model.name}} ({{item.model.sizeKb()}}kb)"
                    ng-style="{'margin-left': ($index === 0 ? '0%' : '5%')}">
                     <i class="fa fa-folder"></i>
