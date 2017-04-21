@@ -356,10 +356,12 @@
                   <span aria-hidden="true">&times;</span>
                   <span class="sr-only">{{"close" | translate}}</span>
               </button>
-              <h4 class="modal-title">Move File</h4>
+              <h4 class="modal-title" ng-show="!temp.isFolder()">Move File</h4>
+              <h4 class="modal-title" ng-show="temp.isFolder()">Move Folder</h4>
             </div>
             <div class="modal-body">
-                {{temp.tempModel.name}}
+              <div  ng-show="!temp.isFolder()">Filename: {{temp.tempModel.name}}</div>
+              <div  ng-show="temp.isFolder()">Folder: {{temp.tempModel.name}}</div>
               <div class="panel panel-primary mt10 mb0">
                 <div class="panel-body">
                 <table>

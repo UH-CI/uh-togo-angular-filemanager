@@ -179,17 +179,28 @@
           // it means a file already exists there.  If get an error, then
           // the way is clear.  So I WANT to get an error message, if I don't get an error, 
           // tell the user a file with the same name already exists in that location.
+            var origFullPath = item.model.path.join('/') + "/" + item.model.name; 
             var newFullPath = item.tempModel.path.join('/') + "/" + item.tempModel.name; 
-	        FilesController.listFileItems(item.tempModel.system.id, newFullPath, 999999, 0)
-	            .then(function(response){
-	              item.error = $translate.instant('error_file_exists');
-	              return false;
-	        }, function (response) {
-		          item.move().then(function() {
-		              $scope.fileNavigator.refresh();
-		              $scope.modal('move', true);
-		          });
-	        });
+            if (item.isFolder() && newFullPath.startsWith(origFullPath)) {
+            	item.error = $translate.instant('error_cant_nest_folder_in_itself');
+            }
+            else {
+		        FilesController.listFileItems(item.tempModel.system.id, newFullPath, 999999, 0)
+		            .then(function(response){
+		              if (item.isFolder()) {
+		            	item.error = $translate.instant('error_folder_exists');
+		              }
+		              else {
+		            	item.error = $translate.instant('error_file_exists'); 
+		              }
+		              return false;
+		        }, function (response) {
+			          item.move().then(function() {
+			              $scope.fileNavigator.refresh();
+			              $scope.modal('move', true);
+			          });
+		        });
+            }
         };
 
         $scope.copy = function(item) {
@@ -198,10 +209,20 @@
             // it means a file already exists there.  If get an error, then
             // the way is clear.  So I WANT to get an error message, if I don't get an error, 
             // tell the user a file with the same name already exists in that location.
-              var newFullPath = item.tempModel.path.join('/') + "/" + item.tempModel.name; 
+            var origFullPath = item.model.path.join('/') + "/" + item.model.name; 
+            var newFullPath = item.tempModel.path.join('/') + "/" + item.tempModel.name; 
+            // it works if you try to copy a folder into itself, but gives a weird error message, for now, don't allow
+            if (item.isFolder() && newFullPath.startsWith(origFullPath)) {
+            	item.error = $translate.instant('error_cant_nest_folder_in_itself');
+            }
   	        FilesController.listFileItems(item.tempModel.system.id, newFullPath, 999999, 0)
   	            .then(function(response){
-  	            	item.error = $translate.instant('error_file_exists');
+	                if (item.isFolder()) {
+		              item.error = $translate.instant('error_folder_exists');
+		            }
+		            else {
+		              item.error = $translate.instant('error_file_exists'); 
+		            }
   	            	return false;
             }, function (response) {
             	item.copy().then(function() {

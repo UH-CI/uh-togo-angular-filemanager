@@ -67,6 +67,8 @@
             compress: "Compress",
             error_invalid_filename: "Invalid filename or already exists, specify another name",
             error_file_exists: "A file with that name already exists in the selected location",
+            error_folder_exists: "A folder with that name already exists in the selected location",
+            error_cant_nest_folder_in_itself: "You can't put a folder inside of itself",
             error_modifying: "An error occurred modifying the file",
             error_deleting: "An error occurred deleting the file or folder",
             error_displaying: "An error occurred displaying the file",
