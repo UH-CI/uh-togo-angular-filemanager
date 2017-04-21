@@ -345,8 +345,8 @@
                 },
                 function(response){
                   var message = '';
-                  if (response.errorResponse.message) {
-                    message = $translate.instant('error_copying') + ' - ' + response.errorResponse.message
+                  if (response.errorMessage) {
+                    message = $translate.instant('error_copying') + ' - ' + response.errorMessage
                   } else if (response.errorResponse.fault){
                     message = $translate.instant('error_copying') + ' - ' + response.errorResponse.fault.message;
                   } else {
@@ -366,8 +366,8 @@
                 },
                 function(response) {
                   var message = '';
-                  if (response.errorResponse.message) {
-                    message = $translate.instant('error_copying') + ' - ' + response.errorResponse.message
+                  if (response.errorMessage) {
+                    message = $translate.instant('error_copying') + ' - ' + response.errorMessage
                   } else if (response.errorResponse.fault){
                     message = $translate.instant('error_copying') + ' - ' + response.errorResponse.fault.message;
                   } else {
@@ -401,8 +401,8 @@
                 },
                 function(response){
                   var message = '';
-                  if (response.errorResponse.message) {
-                    message = $translate.instant('error_moving') + ' - ' + response.errorResponse.message
+                  if (response.errorMessage) {
+                    message = $translate.instant('error_moving') + ' - ' + response.errorMessage
                   } else if (response.errorResponse.fault){
                     message = $translate.instant('error_moving') + ' - ' + response.errorResponse.fault.message;
                   } else {
@@ -422,8 +422,8 @@
                 },
                 function(response) {
                   var message = '';
-                  if (response.errorResponse.message) {
-                    message = $translate.instant('error_moving') + ' - ' + response.errorResponse.message
+                  if (response.errorMessage) {
+                    message = $translate.instant('error_moving') + ' - ' + response.errorMessage
                   } else if (response.errorResponse.fault){
                     message = $translate.instant('error_moving') + ' - ' + response.errorResponse.fault.message;
                   } else {

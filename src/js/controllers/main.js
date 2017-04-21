@@ -1,8 +1,8 @@
 (function(window, angular, $) {
     "use strict";
     angular.module('FileManagerApp').controller('FileManagerCtrl', [
-    '$scope', '$state', '$rootScope', '$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader','Commons', 'SystemsController','MetaController',
-        function($scope, $state, $rootScope, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, Commons, SystemsController,MetaController) {
+    '$scope', '$state', '$rootScope', '$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader','Commons', 'FilesController', 'SystemsController','MetaController',
+        function($scope, $state, $rootScope, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, Commons, FilesController, SystemsController,MetaController) {
         $scope.config = fileManagerConfig;
         $scope.appName = fileManagerConfig.appName;
         $scope.modes = ['Javascript', 'Shell', 'XML', 'Markdown', 'CLike', 'Python'];
@@ -174,26 +174,40 @@
           );
         }
         $scope.move = function(item){
-          var samePath = item.tempModel.path.join() === item.model.path.join();
-          if (samePath && $scope.fileNavigator.fileNameExists(item.tempModel.name)) {
-              item.error = $translate.instant('error_invalid_filename');
-              return false;
-          }
-          item.move().then(function() {
-              $scope.fileNavigator.refresh();
-              $scope.modal('move', true);
-          });
-        }
+          // checking to see if the file already exists in the new location
+          // calling to get the metadata for the new file/location, if I get something back
+          // it means a file already exists there.  If get an error, then
+          // the way is clear.  So I WANT to get an error message, if I don't get an error, 
+          // tell the user a file with the same name already exists in that location.
+            var newFullPath = item.tempModel.path.join('/') + "/" + item.tempModel.name; 
+	        FilesController.listFileItems(item.tempModel.system.id, newFullPath, 999999, 0)
+	            .then(function(response){
+	              item.error = $translate.instant('error_file_exists');
+	              return false;
+	        }, function (response) {
+		          item.move().then(function() {
+		              $scope.fileNavigator.refresh();
+		              $scope.modal('move', true);
+		          });
+	        });
+        };
 
         $scope.copy = function(item) {
-            var samePath = item.tempModel.path.join() === item.model.path.join();
-            if (samePath && $scope.fileNavigator.fileNameExists(item.tempModel.name)) {
-                item.error = $translate.instant('error_invalid_filename');
-                return false;
-            }
-            item.copy().then(function() {
-                $scope.fileNavigator.refresh();
-                $scope.modal('copy', true);
+            // checking to see if the file already exists in the new location
+            // calling to get the metadata for the new file/location, if I get something back
+            // it means a file already exists there.  If get an error, then
+            // the way is clear.  So I WANT to get an error message, if I don't get an error, 
+            // tell the user a file with the same name already exists in that location.
+              var newFullPath = item.tempModel.path.join('/') + "/" + item.tempModel.name; 
+  	        FilesController.listFileItems(item.tempModel.system.id, newFullPath, 999999, 0)
+  	            .then(function(response){
+  	            	item.error = $translate.instant('error_file_exists');
+  	            	return false;
+            }, function (response) {
+            	item.copy().then(function() {
+            		$scope.fileNavigator.refresh();
+            		$scope.modal('copy', true);
+            	});
             });
         };
 
@@ -376,6 +390,7 @@
               $scope.requesting = true;
               $scope.fileNavigator.refresh();
               $scope.modal('groupfilesmove', true);
+              $scope.fileNavigator.fileListSelected = [];
           }, function(data) {
               var errorMsg = data.result && data.result.error || $translate.instant('error_moving_files');
               $scope.temp.error = errorMsg;
