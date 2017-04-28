@@ -57,6 +57,7 @@
             go_back: "Go back",
             wait: "Wait",
             move: "Move",
+            move_confirm_metadata_loss: "This action will strip away any existing metadata on any and all files in this folder, do you want to continue?",
             download: "Download",
             view_item: "View item",
             remove: "Delete",

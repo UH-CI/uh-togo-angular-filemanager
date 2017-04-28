@@ -195,10 +195,17 @@
 		              }
 		              return false;
 		        }, function (response) {
-			          item.move().then(function() {
-			              $scope.fileNavigator.refresh();
-			              $scope.modal('move', true);
-			          });
+		        	  var canMove = true;
+		        	  // warn the user that any attached metadata in any file in a moved folder will be lost
+		        	  if (item.isFolder()) {
+		        		  canMove = confirm($translate.instant('move_confirm_metadata_loss'));
+		        	  }
+		        	  if (canMove) {
+		        		  item.move().then(function() {
+		        			  $scope.fileNavigator.refresh();
+		        			  $scope.modal('move', true);
+			          	  });
+		        	  }
 		        });
             }
         };
@@ -365,7 +372,7 @@
         $scope.downloadFiles = function(fileListSelected){
           $scope.fileUploader.downloadSelected(fileListSelected).then(function() {
               $scope.fileNavigator.refresh();
-              $scope.modal('uploadfile', true);
+              $scope.modal('preview', true);
           }, function(data) {
               var errorMsg = data.result && data.result.error || $translate.instant('error_downloading_files');
               $scope.temp.error = errorMsg;
@@ -397,7 +404,7 @@
         $scope.deleteFiles = function(fileListSelected){
           $scope.fileUploader.deleteSelected(fileListSelected).then(function() {
               $scope.fileNavigator.refresh();
-              $scope.modal('uploadfile', true);
+              $scope.modal('group-delete-files', true);
           }, function(data) {
               var errorMsg = data.result && data.result.error || $translate.instant('error_deleting_files');
               $scope.temp.error = errorMsg;
