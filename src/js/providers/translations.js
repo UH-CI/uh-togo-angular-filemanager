@@ -58,6 +58,7 @@
             wait: "Wait",
             move: "Move",
             move_confirm_metadata_loss: "This action will strip away any existing metadata on any and all files in this folder, do you want to continue?",
+            copy_confirm_metadata_loss: "All copied files will be missing all of the metadata attached to the originals.  Do you want to continue?",
             download: "Download",
             view_item: "View item",
             remove: "Delete",

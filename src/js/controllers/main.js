@@ -232,10 +232,14 @@
 		            }
   	            	return false;
             }, function (response) {
-            	item.copy().then(function() {
-            		$scope.fileNavigator.refresh();
-            		$scope.modal('copy', true);
-            	});
+	        	  // warn the user that metadata is not included in the copy
+	              var canMove = confirm($translate.instant('copy_confirm_metadata_loss'));
+	        	  if (canMove) {
+	            	item.copy().then(function() {
+	            		$scope.fileNavigator.refresh();
+	            		$scope.modal('copy', true);
+	            	});
+	        	  }
             });
         };
 
