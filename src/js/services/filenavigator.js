@@ -103,7 +103,7 @@
                     .then(function (data) {
                         if (self.system.default){
                           self.persistUuuids(data).then(function(){
-                            FilesController.listFileItems(self.system.id, path, 999999, 0)
+                            FilesController.indexFileItems(self.system.id, path, 999999, 0)
                                 .then(function (data) {
                                    self.deferredHandler(data, deferred);
                                    self.requesting = false;
