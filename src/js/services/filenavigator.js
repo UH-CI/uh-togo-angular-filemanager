@@ -59,6 +59,25 @@
             return deferred.resolve(data);
         };
 
+        FileNavigator.prototype.persistUuuids = function(files){
+          var self = this;
+          var promises = [];
+          angular.forEach(files, function(value, key) {
+            promises.push(
+              FilesController.listFileItems(value.system, value._links.self.href.split(value.system)[1],1,0)
+            )
+          });
+
+          var deferred = $q.defer();
+
+          return $q.all(promises).then(
+            function(data) {
+              //do nothing
+            },
+            function(data) {
+          });
+        }
+
         FileNavigator.prototype.list = function() {
             var self = this;
             var deferred = $q.defer();
@@ -82,13 +101,20 @@
 
                 FilesController.listFileItems(self.system.id, path, 999999, 0)
                     .then(function (data) {
-                        self.deferredHandler(data, deferred);
+                        self.persistUuuids(data).then(function(){
+                          FilesController.listFileItems(self.system.id, path, 999999, 0)
+                              .then(function (data) {
+                                 self.deferredHandler(data, deferred);
+                                 self.requesting = false;
+                               })
+                        })
                     }, function (data) {
                         // need to modify angularjs-sdk to return proper messages here
                         self.error = 'Could not list files for this path';
                         self.deferredHandler(data, deferred, 'Unknown error listing, check the response');
+                        self.requesting = false;
                     })['finally'](function (data) {
-                    self.requesting = false;
+
                 });
 
                 return deferred.promise;
