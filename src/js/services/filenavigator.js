@@ -101,13 +101,19 @@
 
                 FilesController.listFileItems(self.system.id, path, 999999, 0)
                     .then(function (data) {
-                        self.persistUuuids(data).then(function(){
-                          FilesController.listFileItems(self.system.id, path, 999999, 0)
-                              .then(function (data) {
-                                 self.deferredHandler(data, deferred);
-                                 self.requesting = false;
-                               })
-                        })
+                        if (self.system.default){
+                          self.persistUuuids(data).then(function(){
+                            FilesController.listFileItems(self.system.id, path, 999999, 0)
+                                .then(function (data) {
+                                   self.deferredHandler(data, deferred);
+                                   self.requesting = false;
+                                 })
+                          })
+                        }
+                        else{
+                          self.deferredHandler(data, deferred);
+                          self.requesting = false;
+                        }
                     }, function (data) {
                         // need to modify angularjs-sdk to return proper messages here
                         self.error = 'Could not list files for this path';
