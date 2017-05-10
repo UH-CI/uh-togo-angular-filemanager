@@ -172,6 +172,9 @@
               $scope.moveSystems = response.result;
             }
           );
+          //set current and new path to fileNavigator currentPath
+          angular.element('#currentpath').val($scope.fileNavigator.currentPath.join('/'))
+          angular.element('#groupfilepath').val($scope.fileNavigator.currentPath.join('/'))
         }
         $scope.move = function(item){
           // checking to see if the file already exists in the new location
@@ -416,13 +419,18 @@
         }
 
         $scope.groupfilesmove = function(fileListSelected){
+          angular.element('#movefilebutton').prop("disabled", true);
           $scope.requesting = true;
           var new_path = angular.element('#groupfilepath').val();
           $scope.fileUploader.moveSelected(fileListSelected, new_path).then(function() {
               $scope.requesting = true;
               $scope.fileNavigator.refresh();
               $scope.modal('groupfilesmove', true);
+<<<<<<< HEAD
               $scope.fileNavigator.fileListSelected = [];
+=======
+              angular.element('#movefilebutton').prop("disabled", false);
+>>>>>>> dev
           }, function(data) {
               var errorMsg = data.result && data.result.error || $translate.instant('error_moving_files');
               $scope.temp.error = errorMsg;

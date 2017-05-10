@@ -46,8 +46,12 @@
         };
         
         $rootScope.openNavigator = function(item, system) {
+<<<<<<< HEAD
           //clear any existing error messages
           $scope.temp.error = "";
+=======
+          $scope.fileNavigator = new FileNavigator();
+>>>>>>> dev
           if (typeof system !== 'undefined'){
             $scope.fileNavigator.system = item.tempModel.system = system;
             $scope.fileNavigator.currentPath = [];
