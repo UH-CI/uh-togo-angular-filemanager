@@ -62,7 +62,6 @@
           var self = this;
           var filepath = file.path.split('/')
           filepath.pop();
-          alert(angular.toJson(filesUri + '/' + filepath.join('/')))
           return Upload.upload({
               url: filesUri + '/' + filepath.join('/') + "?naked=true",
               data: {
