@@ -17,7 +17,7 @@
         	$rootScope.selectNoHide(item, temp);
             $('#selector').modal('hide');
         };
-        
+
         // used by $rootScope.select
         $rootScope.selectNoHide = function(item, temp) {
             if (item.model.root === true){
@@ -28,30 +28,27 @@
                angular.element('#groupfilepath').val(item.model.fullPath());
             }
         };
-        
+
         // triggered by 'use selected folder' in selector modal in modals.html file
-        $rootScope.folderClickAndHide = function(temp) {    	
+        $rootScope.folderClickAndHide = function(temp) {
 	        var item = $scope.fileNavigator.fileList[0];
 	        $scope.fileNavigator.folderClick(item);
 	        $rootScope.select(item, temp);
         };
 
         // triggered by the close button in the selector modal in modals.html file
-        $rootScope.closeNavigator = function(temp) {    
+        $rootScope.closeNavigator = function(temp) {
         	$scope.fileNavigator.system = temp.model.system;
             $scope.fileNavigator.currentPath = temp.model.path.slice();
             $scope.fileNavigator.crumbsPath = temp.model.path.slice();
             $scope.fileNavigator.refresh();
             $('#selector').modal('hide');
         };
-        
+
         $rootScope.openNavigator = function(item, system) {
-<<<<<<< HEAD
           //clear any existing error messages
           $scope.temp.error = "";
-=======
-          $scope.fileNavigator = new FileNavigator();
->>>>>>> dev
+
           if (typeof system !== 'undefined'){
             $scope.fileNavigator.system = item.tempModel.system = system;
             $scope.fileNavigator.currentPath = [];

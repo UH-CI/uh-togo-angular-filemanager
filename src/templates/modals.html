@@ -17,7 +17,7 @@
 						</tr>
 					</tbody>
 				</table>
-				
+
               <div class="panel panel-primary mt10 mb0">
                 <div class="panel-body">
                 <table>
@@ -34,12 +34,12 @@
                 		<tr>
                 			<td>
                             	<a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(fileNavigator.fileListSelected[0], selectedSystem)">{{'select_new_location' | translate}}</a>
-                			
+
                 			</td>
-                		</tr>         		
+                		</tr>
                 	</tbody>
                 </table>
-                    <!-- 
+                    <!--
                       <div class="detail-sources">
                         <div>
                           <form  class="move-files-form">
@@ -59,13 +59,8 @@
               <div ng-include data-src="'error-bar'" class="clearfix"></div>
             </div>
             <div class="modal-footer">
-<<<<<<< HEAD
               <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
               <button type="submit" class="btn btn-primary"  ng-click="groupfilesmove(fileNavigator.fileListSelected)">{{"Move" | translate}}</button>
-=======
-              <button type="button" class="btn btn-default" data-dismiss="modal" ng-disabled="temp.inprocess">{{"cancel" | translate}}</button>
-              <button id="movefilebutton" type="submit" class="btn btn-primary"  ng-click="groupfilesmove(fileNavigator.fileListSelected)">Move Files</button>
->>>>>>> dev
             </div>
         </form>
     </div>
@@ -330,7 +325,7 @@
                     		</tr>
                     	</tbody>
                     </table>
-                    <!-- 
+                    <!--
                     <div class="detail-sources">
                       <code class="mr5"><b>{{"source" | translate}}:</b> {{temp.tempModel.system.id}}{{temp.model.fullPath()}}</code>
                     </div>
@@ -391,11 +386,11 @@
                 			<td>
                 				<a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(temp, selectedSystem)">{{'select_new_location' | translate}}</a>
                 			</td>
-                		</tr>         		
+                		</tr>
                 	</tbody>
                 </table>
-                
-                <!-- 
+
+                <!--
                   <div class="detail-sources">
                     <code class="mr5"><b>Current Path:</b> {{temp.tempModel.system.id}}{{temp.model.fullPath()}}</code>
                   </div>
@@ -746,8 +741,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default pull-left" ng-disabled="temp.inprocess" ng-click="$root.closeNavigator(temp)">{{"close" | translate}}</button>  
-        <button type="button" class="btn btn-primary" ng-disabled="temp.inprocess" ng-click="$root.folderClickAndHide(temp)">{{"Use selected location" | translate}}</button>  
+        <button type="button" class="btn btn-default pull-left" ng-disabled="temp.inprocess" ng-click="$root.closeNavigator(temp)">{{"close" | translate}}</button>
+        <button type="button" class="btn btn-primary" ng-disabled="temp.inprocess" ng-click="$root.folderClickAndHide(temp)">{{"Use selected location" | translate}}</button>
 
       </div>
     </div>
