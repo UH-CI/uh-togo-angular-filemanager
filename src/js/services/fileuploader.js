@@ -60,7 +60,12 @@
         this.uploadFile = function(file, form, filesUri, callback) {
 
           var self = this;
-          var filepath = file.path.split('/')
+          if(file.path != undefined){
+            var filepath = file.path.split('/')
+          }
+          else{
+            var filepath = []
+          }
           filepath.pop();
           return Upload.upload({
               url: filesUri + '/' + filepath.join('/') + "?naked=true",
