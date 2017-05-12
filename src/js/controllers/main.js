@@ -200,9 +200,9 @@
 		        }, function (response) {
 		        	  var canMove = true;
 		        	  // warn the user that any attached metadata in any file in a moved folder will be lost
-		        	  if (item.isFolder()) {
+		        	  /*if (item.isFolder()) {
 		        		  canMove = confirm($translate.instant('move_confirm_metadata_loss'));
-		        	  }
+		        	  }*/
 		        	  if (canMove) {
 		        		  item.move().then(function() {
 		        			  $scope.fileNavigator.refresh();
@@ -235,8 +235,9 @@
 		            }
   	            	return false;
             }, function (response) {
+              var canMove=true;
 	        	  // warn the user that metadata is not included in the copy
-	              var canMove = confirm($translate.instant('copy_confirm_metadata_loss'));
+	            //  var canMove = confirm($translate.instant('copy_confirm_metadata_loss'));
 	        	  if (canMove) {
 	            	item.copy().then(function() {
 	            		$scope.fileNavigator.refresh();
