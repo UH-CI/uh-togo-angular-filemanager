@@ -85,12 +85,15 @@
               </label>
             </td>
             <td ng-right-click="touch(item)">
-                <!--<a href="" ng-click="smartClick(item)" title="{{item.model.name}} ({{item.model.sizeKb()}}kb)" title="{{ item.model.name }}">-->
-
-                    <i class="fa fa-folder mr2" ng-show="item.model.type === 'dir'"></i>
+                <a href="" ng-show="item.model.type === 'dir'" ng-click="smartClick(item)" title="{{item.model.name}} ({{item.model.sizeKb()}}kb)" title="{{ item.model.name }}">
+                    <i class="fa fa-folder mr2"></i>
                     <i class="fa {{ item.model.name | fileIcon }} mr2" ng-show="item.model.type === 'file'"></i>
                     {{item.model.name | strLimit : 64}}
-                <!--</a>-->
+                </a>
+                <span ng-show="item.model.type === 'file'">
+                  <i class="fa {{ item.model.name | fileIcon }} mr2" ></i>
+                  {{item.model.name | strLimit : 64}}
+                </span>
             </td>
             <td class="hidden-xs" ng-show="item.model.type === 'dir'">
                 &nbsp;
