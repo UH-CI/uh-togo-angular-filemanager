@@ -28,7 +28,7 @@
                         return ('/');
                     }
                     else {
-                        return ('/' + this.path.join('/')).replace(/\/\//g, '/');           
+                        return ('/' + this.path.join('/')).replace(/\/\//g, '/');
                     }
                 },
                 crumbsPath: function(){
@@ -505,7 +505,7 @@
                 var postitIt = new PostItRequest();
                 postitIt.setMaxUses(2);
                 postitIt.setMethod("GET");
-                postitIt.setUrl([self.model._links.self.href, $.param(data)].join('?'));
+                postitIt.setUrl([decodeURIComponent(self.model._links.self.href), $.param(data)].join('?'));
 
                 PostitsController.addPostit(postitIt)
                     .then(function(data) {
@@ -555,7 +555,7 @@
               var postitIt = new PostItRequest();
               postitIt.setMaxUses(2);
               postitIt.setMethod("GET");
-              postitIt.setUrl([self.model._links.self.href, $.param(data)].join('?'));
+              postitIt.setUrl([decodeURIComponent(self.model._links.self.href), $.param(data)].join('?'));
 
               PostitsController.addPostit(postitIt)
                   .then(function(data) {
@@ -595,7 +595,7 @@
             var postitIt = new PostItRequest();
             postitIt.setMaxUses(self.postit.maxUses);
             postitIt.setMethod("GET");
-            postitIt.setUrl(self.model._links.self.href);
+            postitIt.setUrl(decodeURIComponent(self.model._links.self.href));
 
             if (typeof self.postit.lifetime === 'undefined') {
               self.postit.lifetime = 2592000; // set to default 30 days

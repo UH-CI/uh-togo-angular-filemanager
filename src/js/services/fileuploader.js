@@ -238,7 +238,7 @@
             var postitIt = new PostItRequest();
             postitIt.setMaxUses(2);
             postitIt.setMethod("GET");
-            postitIt.setUrl([file.model._links.self.href, $.param(data)].join('?'));
+            postitIt.setUrl([decodeURIComponent(file.model._links.self.href), $.param(data)].join('?'));
 
             return PostitsController.addPostit(postitIt)
                 .then(function(resp) {
