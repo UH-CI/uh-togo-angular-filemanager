@@ -58,7 +58,6 @@
           MetaController.listMetadata("{'name':'published'}")
             .then(function(response){
               $scope.published_uuids =  response.result[0].associationIds;
-              alert(angular.toJson($scope.published_uuids))
             })
         }
 
