@@ -11,10 +11,11 @@
                     <ul class="dropdown-menu">
                     <!--  <li ng-if="!app.available && system.default">
                           <a ng-click="metadataFiles(fileNavigator.fileListSelected)"> <i class="fa fa-tag"></i> View/Add Metadata</a>
-                      </li>
+                      </li>-->
                         <li ng-if="!app.available && system.default">
                             <a ng-click="stageFilesForRepo(fileNavigator.fileListSelected)"> <i class="fa fa-star-half-o"></i> Stage For Repository</a>
-                        </li>-->
+                        </li>
+                        <!--
                         <li ng-show="config.allowedActions.move && !temp.isFolder() && system.default"><a href="" tabindex="-1" data-toggle="modal" data-target="#groupfilesmove" ng-click="getMoveSystems()"><i class="fa fa-folder-open-o"></i> {{'move' | translate}}</a></li>
                         <!--<li ng-if="!app.available">
                             <a ng-click="downloadFiles(fileNavigator.fileListSelected)"> <i class="fa fa-download"></i> Download</a>
@@ -50,13 +51,13 @@
                 </a>
             </th>
              -->
-            <!--
+            
             <th ng-if="fileNavigator.fileList[0].model.system.default" class="col-md-4 hidden-sm hidden-xs">
                 <a href="">
-                    {{"Published" | translate}}
+                    {{"Status" | translate}}
                 </a>
             </th>
-            -->
+            
             <!-- <th class="text-right" ng-if="config.allowedActions.agaveUpload && config.allowedActions.agaveSelect">Actions</th> -->
             <th class="text-center" ng-if="config.allowedActions.agaveSelect">Select</th>
             <th width="10%" class="text-center"> Actions</th>
@@ -112,12 +113,11 @@
               {{ item.model.uuid}}
             </td>
             -->
-            <!--
+
             <td ng-if="item.model.system.default" class="hidden-sm hidden-xs" >
               {{ staged_uuids.indexOf(item.model.uuid) >= 0 ? 'Staged' : ''}}
               {{ published_uuids.indexOf(item.model.uuid) >= 0 ? 'Published' : ''}}
             </td>
-           -->
             <!-- <td class="text-right" ng-if="config.allowedActions.agaveUpload && config.allowedActions.agaveSelect">
                 <div ng-include="config.tplPath + '/item-toolbar.html'"></div>
             </td> -->

@@ -48,18 +48,19 @@
         $scope.viewTemplate = $cookies.viewTemplate || 'main-table.html';
 
         $scope.get_staged_uuids = function(){
-          MetaController.getMetadata('484964208339784166-242ac1110-0001-012')
+          MetaController.listMetadata("{'$or':[{'name':'stagged'},{'name':'staged'}]}")
             .then(function(response){
-              $scope.staged_uuids =  response.result.associationIds;
-            })
-        }
-        $scope.get_published_uuids = function(){
-          MetaController.getMetadata('4516085960163594726-242ac1110-0001-012')
-            .then(function(response){
-              $scope.published_uuids =  response.result.associationIds;
+              $scope.staged_uuids =  response.result[0].associationIds;
             })
         }
 
+        $scope.get_published_uuids = function(){
+          MetaController.listMetadata("{'name':'published'}")
+            .then(function(response){
+              $scope.published_uuids =  response.result[0].associationIds;
+              alert(angular.toJson($scope.published_uuids))
+            })
+        }
 
         $scope.get_staged_uuids();
         $scope.get_published_uuids();
