@@ -48,7 +48,7 @@
         $scope.viewTemplate = $cookies.viewTemplate || 'main-table.html';
 
         $scope.get_staged_uuids = function(){
-          MetaController.listMetadata("{'$or':[{'name':'stagged'},{'name':'staged'}]}")
+          MetaController.listMetadata("{'name':{'$in':['stagged','staged']}}")
             .then(function(response){
               $scope.staged_uuids =  response.result[0].associationIds;
             })

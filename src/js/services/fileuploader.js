@@ -179,9 +179,9 @@
         };
 
         this.stageFile = function(uuids, callback){
-         MetaController.getMetadata('484964208339784166-242ac1110-0001-012')
+         MetaController.listMetadata("{'name':{'$in':['stagged','staged']}}")
            .then(function(response){
-               var metadatum = response.result;
+               var metadatum = response.result[0];
                var body = {};
                body.associationIds = metadatum.associationIds;
                //check if fileUuids are already associated to be stagged
@@ -202,7 +202,7 @@
                      }
                    })
                  }*/
-                 return   MetaController.updateMetadata(body,'484964208339784166-242ac1110-0001-012')
+                 return   MetaController.updateMetadata(body,metadatum.uuid)
                   .then(function(resp) {
                    return callback(resp.data);
                   });
