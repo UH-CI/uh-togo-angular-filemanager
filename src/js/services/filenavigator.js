@@ -101,7 +101,7 @@
 
                 FilesController.listFileItems(self.system.id, path, 999999, 0)
                     .then(function (data) {
-                        if (self.system.default || self.system.id == 'ikewai-archive'){
+                        if (self.system.default || self.system.id == 'ikewai-annotated-data'){
                           self.persistUuuids(data).then(function(){
                             FilesController.indexFileItems(self.system.id, path, 999999, 0)
                                 .then(function (data) {
