@@ -207,6 +207,7 @@
                     MetaController.listMetadata("{'name':'rejected'}")
                       .then(function(response){
                           var metadatum = response.result[0];
+                          console.log(metadatum.uuid)
                           var body = {};
                           body.associationIds = metadatum.associationIds;
                           //remove rejected uuids
@@ -215,6 +216,8 @@
                           })
                           body.name = metadatum.name;
                           body.schemaId = metadatum.schemaId;
+                          body.value="{}"
+                          console.log(body)
                           //if uuid was rejected before remove it
                            /* if (body.rejected != undefined){
                               angular.forEach(body.rejected, function(rejected_uuid){
@@ -223,7 +226,7 @@
                                 }
                               })
                             }*/
-                         return   MetaController.updateMetadata(body,metadatum.uuid)
+                          MetaController.updateMetadata(body,metadatum.uuid).then(console.log("response:"+angular.toJson(response)))
                         return callback(resp.data);
                   });
              })

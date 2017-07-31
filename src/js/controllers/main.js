@@ -61,8 +61,16 @@
             })
         }
 
+        $scope.get_rejected_uuids = function(){
+          MetaController.listMetadata("{'name':'rejected'}")
+            .then(function(response){
+              $scope.rejected_uuids =  response.result[0].associationIds;
+            })
+        }
+
         $scope.get_staged_uuids();
         $scope.get_published_uuids();
+        $scope.get_rejected_uuids();
 
         $scope.setTemplate = function(name) {
             $scope.viewTemplate = $cookies.viewTemplate = name;
