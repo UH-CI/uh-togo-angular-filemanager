@@ -204,9 +204,30 @@
                  }*/
                  return   MetaController.updateMetadata(body,metadatum.uuid)
                   .then(function(resp) {
-                   return callback(resp.data);
+                    MetaController.listMetadata("{'name':'rejected'}")
+                      .then(function(response){
+                          var metadatum = response.result[0];
+                          var body = {};
+                          body.associationIds = metadatum.associationIds;
+                          //remove rejected uuids
+                          angular.forEach(uuids, function(uuid){
+                            body.associationIds.splice(body.associationIds.indexOf(uuid), 1);
+                          })
+                          body.name = metadatum.name;
+                          body.schemaId = metadatum.schemaId;
+                          //if uuid was rejected before remove it
+                           /* if (body.rejected != undefined){
+                              angular.forEach(body.rejected, function(rejected_uuid){
+                                if (body.associationIds.indexOf(rejected uuid) < 0) {
+                                  body.associationIds.push(rejected_uuid);
+                                }
+                              })
+                            }*/
+                         return   MetaController.updateMetadata(body,metadatum.uuid)
+                        return callback(resp.data);
                   });
              })
+           })
          };
 
         this.stageForRepo = function(fileUuids){
