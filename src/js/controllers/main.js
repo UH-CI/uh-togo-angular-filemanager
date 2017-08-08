@@ -416,6 +416,7 @@
             paths.push(file.model.fullPath())
           })
           $state.go("filemetadata-multipleadd",{'fileUuids': uuids,'filePaths':paths});
+          //$state.go("filemetadata-manage",{'fileUuids': uuids,'filePaths':paths});
         }
         $scope.stageFilesForRepo = function(fileListSelected){
           var uuids = [];
@@ -496,6 +497,13 @@
           }
         });
 
+        $scope.$on('metadata-status-change', function(event) {
+            $scope.get_staged_uuids();
+            $scope.get_published_uuids();
+            $scope.fileNavigator = new FileNavigator($scope.system, $scope.$parent.$parent.path);
+            $scope.fileNavigator.refresh();
+        });
+        
         $scope.$watch('$parent.$parent.system', function(val) {
             $scope.system = val;
             $scope.fileNavigator = new FileNavigator($scope.system, $scope.$parent.$parent.path);

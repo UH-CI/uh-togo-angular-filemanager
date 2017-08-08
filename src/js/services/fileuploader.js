@@ -1,6 +1,6 @@
 (function(window, angular) {
     "use strict";
-    angular.module('FileManagerApp').service('fileUploader', ['$http', '$q', 'fileManagerConfig', 'Configuration', 'Upload', 'PostitsController', 'FilesController', 'MetaController', function ($http, $q, fileManagerConfig, Configuration, Upload, PostitsController, FilesController, MetaController) {
+    angular.module('FileManagerApp').service('fileUploader', ['$http', '$q', '$rootScope', 'fileManagerConfig', 'Configuration', 'Upload', 'PostitsController', 'FilesController', 'MetaController', function ($http, $q, $rootScope, fileManagerConfig, Configuration, Upload, PostitsController, FilesController, MetaController) {
 
         function deferredHandler(data, deferred, errorMessage) {
             if (!data || typeof data !== 'object') {
@@ -181,20 +181,24 @@
         this.stageFile = function(uuids, callback){
          MetaController.listMetadata("{'name':{'$in':['stagged','staged']}}")
            .then(function(response){
-               var metadatum = response.result[0];
-               var body = {};
-               body.associationIds = metadatum.associationIds;
-               //check if fileUuids are already associated to be stagged
-               angular.forEach(uuids, function(uuid){
-                 if (body.associationIds.indexOf(uuid) < 0) {
-                   body.associationIds.push(uuid);
-                 }
-               })
-                 body.name = metadatum.name;
-                 body.value = metadatum.value;
-                 body.schemaId = metadatum.schemaId;
-                 body.rejected = metadatum.rejected;
-                 //if uuid was rejected before remove it
+              var metadatum = response.result[0];
+              var body = {};
+              body.associationIds = metadatum.associationIds;
+              //check if fileUuids are already associated to be stagged
+              angular.forEach(uuids, function(uuid){
+                var index = body.associationIds.indexOf(uuid);
+                if (index < 0) {
+                  body.associationIds.push(uuid);
+                }
+                else if (index >= 0) {
+                  body.associationIds.splice(index, 1);
+                }
+              });
+              body.name = metadatum.name;
+              body.value = metadatum.value;
+              body.schemaId = metadatum.schemaId;
+              body.rejected = metadatum.rejected;
+              //if uuid was rejected before remove it
                 /* if (body.rejected != undefined){
                    angular.forEach(body.rejected, function(rejected_uuid){
                      if (body.associationIds.indexOf(rejected uuid) < 0) {
@@ -228,10 +232,10 @@
                             }*/
                           MetaController.updateMetadata(body,metadatum.uuid).then(console.log("response:"+angular.toJson(response)))
                         return callback(resp.data);
-                  });
-             })
+                });
+              })
            })
-         };
+        };
 
         this.stageForRepo = function(fileUuids){
          var self = this;
@@ -239,6 +243,7 @@
          //create promise for adding association to staging metadata record
          promises.push(
            self.stageFile(fileUuids, function(value){
+             $rootScope.$broadcast('metadata-status-change');
              //self.files.push(value); //not doing anything with this at the moment
            })
          )
