@@ -72,6 +72,14 @@
         $scope.get_published_uuids();
         $scope.get_rejected_uuids();
 
+        $scope.manage_metadata = function(model){
+          FilesController.indexFileItems(model.system.id,model.path[0]+'/'+model.name,1,0)
+          .then(function(response){
+            $state.go("filemetadata-manage",{'uuid': response[0].uuid});
+          })
+        }
+
+
         $scope.setTemplate = function(name) {
             $scope.viewTemplate = $cookies.viewTemplate = name;
         };
