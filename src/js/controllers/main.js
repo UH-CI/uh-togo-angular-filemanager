@@ -50,7 +50,10 @@
         $scope.get_staged_uuids = function(){
           MetaController.listMetadata("{'name':{'$in':['stagged','staged']}}")
             .then(function(response){
-              $scope.staged_uuids =  response.result[0].associationIds;
+              $scope.staged_filenames =[]
+              angular.forEach(response.result[0]._links.associationIds, function(file){
+                $scope.staged_filenames.push(file.href)
+              })
             })
         }
 
@@ -58,13 +61,20 @@
           MetaController.listMetadata("{'name':'published'}")
             .then(function(response){
               $scope.published_uuids =  response.result[0].associationIds;
+              $scope.published_filenames =[]
+              angular.forEach(response.result[0]._links.associationIds, function(file){
+                $scope.published_filenames.push(file.href)
+              })
             })
         }
 
         $scope.get_rejected_uuids = function(){
           MetaController.listMetadata("{'name':'rejected'}")
             .then(function(response){
-              $scope.rejected_uuids =  response.result[0].associationIds;
+              $scope.rejected_filenames =[]
+              angular.forEach(response.result[0]._links.associationIds, function(file){
+                $scope.rejected_filenames.push(file.href)
+              })
             })
         }
 
@@ -420,21 +430,12 @@
         }
         $scope.stageFilesForRepo = function(fileListSelected){
           var uuids = [];
-          alert('hey')
           angular.forEach(fileListSelected, function(file){
-            FilesController.indexFileItems(file.model.system.id,file.model.path[0]+'/'+file.model.name,1,0)
+            FilesController.indexFileItems(file.model.system.id,file.model.path+'/'+file.model.name,1,0)
             .then(function(response){
-              alert(response[0].uuid)
               uuids.push(response[0].uuid)
+              $scope.fileUploader.stageForRepo(uuids).then(function(){})
             })
-          })
-
-          $scope.fileUploader.stageForRepo(uuids).then(function(){
-          //  $state.reload();
-            $scope.get_staged_uuids();
-            $scope.get_published_uuids();
-            $scope.get_rejected_uuids();
-            $translate.instant('success_files_staged');
           })
           //metadata id to add file uuid to asscotionIds to 484964208339784166-242ac1110-0001-012
         }
@@ -500,10 +501,11 @@
         $scope.$on('metadata-status-change', function(event) {
             $scope.get_staged_uuids();
             $scope.get_published_uuids();
+            $scope.get_rejected_uuids();
             $scope.fileNavigator = new FileNavigator($scope.system, $scope.$parent.$parent.path);
             $scope.fileNavigator.refresh();
         });
-        
+
         $scope.$watch('$parent.$parent.system', function(val) {
             $scope.system = val;
             $scope.fileNavigator = new FileNavigator($scope.system, $scope.$parent.$parent.path);
