@@ -1,5 +1,5 @@
 <li ng-show="config.allowedActions.metadata && system.default && !temp.isFolder()"><a ng-click="manage_metadata(temp.model)"><i class="fa fa-tags"></i> View/Add Annotation</a></li>
-<li ng-show="config.allowedActions.metadata && system.id =='ikewai-annotated-data' && !temp.isFolder()"><a ui-sref="manage_metadata(temp.model)"><i class="fa fa-tags"></i> View Annotation</a></li>
+<li ng-show="config.allowedActions.metadata && system.id =='ikewai-annotated-data' && !temp.isFolder()"><a ng-click="manage_metadata(temp.model)"><i class="fa fa-tags"></i> View Annotation</a></li>
   <li ng-show="config.allowedActions.rename && system.default"><a href="" tabindex="-1" data-toggle="modal" data-target="#rename"><i class="fa fa-edit"></i> {{'rename' | translate}}</a></li>
   <li ng-show="config.allowedActions.copy && system.default"><a href="" tabindex="-1" data-toggle="modal" data-target="#copy" ng-click="getCopySystems()"><i class="fa fa-copy"></i> {{'copy' | translate}}</a></li>
   <li ng-show="config.allowedActions.move && system.default"><a href="" tabindex="-1" data-toggle="modal" data-target="#move" ng-click="getMoveSystems()"><i class="fa fa-folder-open-o"></i> {{'move' | translate}}</a></li>
