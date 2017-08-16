@@ -198,43 +198,40 @@
               body.value = metadatum.value;
               body.schemaId = metadatum.schemaId;
               body.rejected = metadatum.rejected;
-              //if uuid was rejected before remove it
-                /* if (body.rejected != undefined){
-                   angular.forEach(body.rejected, function(rejected_uuid){
-                     if (body.associationIds.indexOf(rejected uuid) < 0) {
-                       body.associationIds.push(rejected_uuid);
-                     }
-                   })
-                 }*/
-                 return   MetaController.updateMetadata(body,metadatum.uuid)
-                  .then(function(resp) {
-                    MetaController.listMetadata("{'name':'rejected'}")
-                      .then(function(response){
-                          var metadatum = response.result[0];
-                          console.log(metadatum.uuid)
-                          var body = {};
-                          body.associationIds = metadatum.associationIds;
-                          //remove rejected uuids
-                          angular.forEach(uuids, function(uuid){
-                            body.associationIds.splice(body.associationIds.indexOf(uuid), 1);
-                          })
-                          body.name = metadatum.name;
-                          body.schemaId = metadatum.schemaId;
-                          body.value="{}"
-                          console.log(body)
-                          //if uuid was rejected before remove it
-                           /* if (body.rejected != undefined){
-                              angular.forEach(body.rejected, function(rejected_uuid){
-                                if (body.associationIds.indexOf(rejected uuid) < 0) {
-                                  body.associationIds.push(rejected_uuid);
-                                }
-                              })
-                            }*/
-                          MetaController.updateMetadata(body,metadatum.uuid).then(console.log("response:"+angular.toJson(response)))
-                        return callback(resp.data);
+
+              //if uuid was rejected before remove it from the rejected schema
+              return   MetaController.updateMetadata(body,metadatum.uuid)
+              .then(function(resp) {
+                MetaController.listMetadata("{'name':'rejected'}")
+                  .then(function(response){
+                      var metadatum = response.result[0];
+                      console.log(metadatum.uuid)
+                      var body = {};
+                      body.name = metadatum.name;
+                      body.schemaId = metadatum.schemaId;
+                      body.value = metadatum.value;
+                      body.value.title = metadatum.value.title;
+                      body.value.reasons = metadatum.value.reasons;
+                      body.associationIds = metadatum.associationIds;
+                      //remove rejected uuids
+                      var changeMade = false;
+                      angular.forEach(uuids, function(uuid){
+                        var index = body.associationIds.indexOf(uuid);
+                        if (index > -1) {
+                          changeMade = true;
+                          body.associationIds.splice(index, 1);
+                          body.value.reasons.splice(index, 1);
+                        }
+                      });
+                      console.log(body)
+                      // don't do the update to the rejected schema unless something actually was removed
+                      if (changeMade) {
+                        MetaController.updateMetadata(body,metadatum.uuid).then(console.log("response:"+angular.toJson(response)));
+                      }
+                      return callback(resp.data);
                 });
-              })
-           })
+             });
+          });
         };
 
         this.stageForRepo = function(fileUuids){

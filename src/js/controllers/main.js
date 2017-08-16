@@ -73,8 +73,12 @@
             .then(function(response){
               $scope.rejected_filenames =[]
               angular.forEach(response.result[0]._links.associationIds, function(file){
-                $scope.rejected_filenames.push(file.href)
-              })
+                $scope.rejected_filenames.push(file.href);
+              });
+              $scope.rejected_reasons = [];
+              angular.forEach(response.result[0].value.reasons, function(reason){
+                $scope.rejected_reasons.push(reason);
+              });          
             })
         }
 
