@@ -15,9 +15,15 @@
                         <li ng-if="!app.available && system.default">
                             <a ng-click="stageFilesForRepo(fileNavigator.fileListSelected)"> <i class="fa fa-star-half-o"></i> Stage/Unstage For Repository</a>
                         </li>
+                        <li ng-show="config.allowedActions.move 
+                                    && !temp.isFolder() 
+                                    && system.default">
+                                        <a href="" tabindex="-1" data-toggle="modal" data-target="#groupfilesmove" ng-click="getMoveSystems()">
+                                            <i class="fa fa-folder-open-o"></i> {{'move' | translate}}
+                                        </a>
+                        </li>
                         <!--
-                        <li ng-show="config.allowedActions.move && !temp.isFolder() && system.default"><a href="" tabindex="-1" data-toggle="modal" data-target="#groupfilesmove" ng-click="getMoveSystems()"><i class="fa fa-folder-open-o"></i> {{'move' | translate}}</a></li>
-                        <!--<li ng-if="!app.available">
+                        <li ng-if="!app.available">
                             <a ng-click="downloadFiles(fileNavigator.fileListSelected)"> <i class="fa fa-download"></i> Download</a>
                         </li>-->
                         <li ng-if="system.default">
