@@ -78,7 +78,7 @@
               $scope.rejected_reasons = [];
               angular.forEach(response.result[0].value.reasons, function(reason){
                 $scope.rejected_reasons.push(reason);
-              });          
+              });
             })
         }
 
@@ -489,6 +489,10 @@
 
         if ($scope.$parent.$parent.system) {
             $scope.fileNavigator.refresh();
+        }
+        
+        $scope.notifyClipboard = function(){
+          App.alert({message: $translate.instant('Link Copied to Clipboard'),closeInSeconds: 5  });
         }
 
         $rootScope.$on('af:directory-change', function(event, systemId, newPath) {

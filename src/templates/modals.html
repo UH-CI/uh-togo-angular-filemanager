@@ -277,7 +277,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" ng-show="temp.postit.link" class="btn btn-default" ng-click="emailPostit(temp)"  ng-disabled="temp.inprocess"><span class="fa fa-envelope"></span> {{"Email" | translate}}</button>
-                    <button id="copy-clip-button" data-clipboard-text="{{temp.postit.link}}" type="button" ng-show="temp.postit.link" class="btn btn-default" ng-disabled="temp.inprocess" ngclipboard><span class="fa fa-clipboard"></span> {{"Copy to clipboard" | translate}}</button>
+                    <button id="copy-clip-button" ng-click="notifyClipboard(temp.postit)" data-clipboard-text="{{temp.postit.link}}" type="button" ng-show="temp.postit.link" class="btn btn-default" ng-disabled="temp.inprocess" ngclipboard><span class="fa fa-clipboard"></span> {{"Copy to clipboard" | translate}}</button>
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="temp.inprocess">{{"Close" | translate}}</button>
                     <button type="submit" ng-show="!temp.postit.link" class="btn btn-primary" ng-disabled="temp.inprocess">{{'Create' | translate}}</button>
                     <button type="submit" ng-show="temp.postit.link" class="btn btn-primary" ng-disabled="temp.inprocess">{{'Create another link' | translate}}</button>
