@@ -86,12 +86,12 @@
         $scope.get_published_uuids();
         $scope.get_rejected_uuids();
 
-        $scope.manage_metadata = function(model){
+        $scope.manage_metadata = function(model, action){
           $scope.requesting = true;
           $scope.fileNavigator.requesting = true;
           FilesController.indexFileItems(model.system.id,model.path[0]+'/'+model.name,1,0)
           .then(function(response){
-            $state.go("filemetadata-manage",{'uuid': response[0].uuid});
+            $state.go("filemetadata-manage",{'uuid': response[0].uuid, 'action': action});
           },function(response){
             $scope.requesting = false;
             $scope.fileNavigator.requesting = false;
@@ -450,6 +450,19 @@
             .then(function(response){
               uuids.push(response[0].uuid)
               $scope.fileUploader.stageForRepo(uuids).then(function(){})
+            })
+          })
+          //metadata id to add file uuid to asscotionIds to 484964208339784166-242ac1110-0001-012
+        }
+
+        $scope.associate = function(fileListSelected){
+          var uuids = [];
+          angular.forEach(fileListSelected, function(file){
+            FilesController.indexFileItems(file.model.system.id,file.model.path+'/'+file.model.name,1,0)
+            .then(function(response){
+              uuids.push(response[0].uuid)
+              //$state.go("filemetadata-associate",{'fileUuids': uuids,'filePaths':paths});
+              //$scope.fileUploader.stageForRepo(uuids).then(function(){})
             })
           })
           //metadata id to add file uuid to asscotionIds to 484964208339784166-242ac1110-0001-012
