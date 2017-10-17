@@ -98,6 +98,8 @@
           })
         }
 
+
+
         $scope.setTemplate = function(name) {
             $scope.viewTemplate = $cookies.viewTemplate = name;
         };
@@ -425,13 +427,22 @@
         $scope.metadataFiles = function(fileListSelected){
           var uuids = [];
           var paths =[]
+          var promises = [];
           angular.forEach(fileListSelected, function(file){
-            uuids.push(file.model.uuid)
-            paths.push(file.model.fullPath())
+            promises.push(FilesController.indexFileItems(file.model.system.id,file.model.path+'/'+file.model.name,1,0)
+            .then(function(response){
+               uuids.push(response[0].uuid)
+               paths.push(file.model.fullPath())
+             }))
           })
-          $state.go("filemetadata-multipleadd",{'fileUuids': uuids,'filePaths':paths});
+          $q.all(promises).then(function () {
+            $state.go("filemetadata-multipleadd",{'fileUuids': uuids,'filePaths':paths});
+          })
+          //alert(angular.toJson(uuids))
+
           //$state.go("filemetadata-manage",{'fileUuids': uuids,'filePaths':paths});
         }
+
         $scope.stageFilesForRepo = function(fileListSelected){
           var uuids = [];
           angular.forEach(fileListSelected, function(file){
@@ -490,7 +501,7 @@
         if ($scope.$parent.$parent.system) {
             $scope.fileNavigator.refresh();
         }
-        
+
         $scope.notifyClipboard = function(){
           App.alert({message: $translate.instant('Link Copied to Clipboard'),closeInSeconds: 5  });
         }
