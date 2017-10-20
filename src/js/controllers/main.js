@@ -427,6 +427,7 @@
         //the filemetadata multiple add controller
         $scope.metadataFiles = function(fileListSelected){
           $scope.requesting = true;
+          $scope.fileNavigator.requesting = true;
           var uuids = [];
           var paths =[]
           var promises = [];
