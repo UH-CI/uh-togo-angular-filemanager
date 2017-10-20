@@ -426,6 +426,7 @@
         //extract the uuids from the selected files to pass to
         //the filemetadata multiple add controller
         $scope.metadataFiles = function(fileListSelected){
+          $scope.requesting = true;
           var uuids = [];
           var paths =[]
           var promises = [];
@@ -470,7 +471,7 @@
           //metadata id to add file uuid to asscotionIds to 484964208339784166-242ac1110-0001-012
         }
         */
-        
+
         $scope.deleteFiles = function(fileListSelected){
           $scope.fileUploader.deleteSelected(fileListSelected).then(function() {
               $scope.fileNavigator.refresh();
