@@ -456,6 +456,7 @@
           //metadata id to add file uuid to asscotionIds to 484964208339784166-242ac1110-0001-012
         }
 
+        /*
         $scope.associate = function(fileListSelected){
           var uuids = [];
           angular.forEach(fileListSelected, function(file){
@@ -468,7 +469,8 @@
           })
           //metadata id to add file uuid to asscotionIds to 484964208339784166-242ac1110-0001-012
         }
-
+        */
+        
         $scope.deleteFiles = function(fileListSelected){
           $scope.fileUploader.deleteSelected(fileListSelected).then(function() {
               $scope.fileNavigator.refresh();
