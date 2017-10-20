@@ -10,13 +10,10 @@
                     </a>
                     <ul class="dropdown-menu">
                      <li ng-if="!app.available && system.default">
-                          <a ng-click="metadataFiles(fileNavigator.fileListSelected)"> <i class="fa fa-tag"></i> View/Add Annotation</a>
+                          <a ng-click="metadataFiles(fileNavigator.fileListSelected)"> <i class="fa fa-tag"></i> Manage Annotations</a>
                       </li>
                         <li ng-if="!app.available && system.default">
                             <a ng-click="stageFilesForRepo(fileNavigator.fileListSelected)"> <i class="fa fa-star-half-o"></i> Stage/Unstage For Repository</a>
-                        </li>
-                        <li ng-if="!app.available && system.default">
-                            <a ng-click="associate(fileNavigator.fileListSelected)"> <i class="fa fa-star-half-o"></i> Associate Data Descriptors </a>
                         </li>
                         <li ng-show="config.allowedActions.move
                                     && !temp.isFolder()

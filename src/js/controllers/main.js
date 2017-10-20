@@ -91,7 +91,8 @@
           $scope.fileNavigator.requesting = true;
           FilesController.indexFileItems(model.system.id,model.path[0]+'/'+model.name,1,0)
           .then(function(response){
-            $state.go("filemetadata-manage",{'uuid': response[0].uuid, 'action': action});
+            //$state.go("filemetadata-manage",{'uuid': response[0].uuid, 'action': action});
+            $state.go("filemetadata-multipleadd",{'fileUuids': response[0].uuid,'filePaths':model.name});
           },function(response){
             $scope.requesting = false;
             $scope.fileNavigator.requesting = false;
