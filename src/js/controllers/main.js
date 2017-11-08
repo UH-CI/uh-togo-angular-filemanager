@@ -446,6 +446,20 @@
           //$state.go("filemetadata-manage",{'fileUuids': uuids,'filePaths':paths});
         }
 
+        $scope.stageFileForRepo = function(model, action){
+          var uuids = [];
+          $scope.requesting = true;
+          $scope.fileNavigator.requesting = true;
+          FilesController.indexFileItems(model.system.id,model.path[0]+'/'+model.name,1,0)
+          .then(function(response){
+              uuids.push(response[0].uuid)
+              $scope.fileUploader.stageForRepo(uuids).then(function(){})
+          },function(response){
+            $scope.requesting = false;
+            $scope.fileNavigator.requesting = false;
+          })
+        }
+
         $scope.stageFilesForRepo = function(fileListSelected){
           var uuids = [];
           angular.forEach(fileListSelected, function(file){
