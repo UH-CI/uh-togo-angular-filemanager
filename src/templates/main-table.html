@@ -91,7 +91,7 @@
                 <input type="checkbox" data-checklist-model="fileNavigator.fileListSelected" data-checklist-value="item" ng-disabled="item.model.type === 'dir'">
               </label>
             </td>
-            <td ng-right-click="touch(item)">
+            <td ng-right-click="touch(item)" ng-click="touch(item)">
                 <a href="" ng-show="item.model.type === 'dir'" ng-click="smartClick(item)" title="{{item.model.name}} ({{item.model.sizeKb()}}kb)" title="{{ item.model.name }}">
                     <i class="fa fa-folder mr2"></i>
                     <i class="fa {{ item.model.name | fileIcon }} mr2" ng-show="item.model.type === 'file'"></i>
@@ -99,7 +99,14 @@
                 </a>
                 <span ng-show="item.model.type === 'file'">
                   <i class="fa {{ item.model.name | fileIcon }} mr2" ></i>
-                  {{item.model.name | strLimit : 64}}
+                  <span ng-show="config.allowedActions.preview && item.isPreviewable()">
+                    <a href="" tabindex="-1" data-toggle="modal" data-target="#preview" ng-click="item.download(true)">
+                        <i class="fa fa-eye"></i> {{item.model.name | strLimit : 64}}
+                    </a>
+                  </span>
+                  <span ng-show="!config.allowedActions.preview || !item.isPreviewable()">
+                    {{item.model.name | strLimit : 64}}
+                  </span>
                 </span>
             </td>
             <td class="hidden-xs" ng-show="item.model.type === 'dir'">
