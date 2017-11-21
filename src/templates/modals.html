@@ -1,7 +1,7 @@
 <div class="modal animated fadeIn" id="groupfilesmove">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-        <form ng-submit="move(temp)">
+        <form>
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">
                   <span aria-hidden="true">&times;</span>
@@ -44,12 +44,8 @@
                         <div>
                           <form  class="move-files-form">
                             <b>Current Path:</b> <input id="currentpath" type="text" size="60" value="{{fileNavigator.fileListSelected[0].model.fullPath().split('/').slice(1,-1).join('/')}}" disabled /><br/>
-<<<<<<< HEAD
                             <b>New Path:</b> <input id="groupfilepath" type="text" size="60" value="/{{fileNavigator.fileListSelected[0].tempModel.fullPath().split('/').slice(1,-1).join('/')}}" disabled />
                             <a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(fileNavigator.fileListSelected[0], selectedSystem)">Select Destination Folder</a>
-=======
-                            <b>New Path:</b> <input id="groupfilepath" type="text" size="60" value="/{{fileNavigator.fileListSelected[0].tempModel.fullPath().split('/').slice(1,-1).join('/')}}" disabled /><a href="" class="btn btn-primary" role="button" ng-click="$root.openNavigator(fileNavigator.fileListSelected[0], system)">Select Destination Folder</a>
->>>>>>> dev
                           </form>
                         </div>
                     </div>
