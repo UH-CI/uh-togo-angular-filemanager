@@ -1,7 +1,7 @@
 <table class="table mb0 table-files table-striped table-bordered table-hover">
     <thead>
         <tr>
-           <th class="col-md-2 text-center" ng-if="!config.allowedActions.agaveUpload && !config.allowedActions.agaveSelect">
+           <th class="col-md-2 text-center" ng-if="!config.allowedActions.agaveUpload && !config.allowedActions.agaveSelect && system.default">
                 <input type="checkbox" ng-click="checkAll = !checkAll; checkAllFiles(checkAll);">
                 <div class="btn-group" ng-show="fileNavigator.fileListSelected.length !== 0">
                     <a class="btn btn-outline" href="#" data-toggle="dropdown">
@@ -85,7 +85,7 @@
             </td>
         </tr>
         <tr ng-repeat="item in fileNavigator.fileList | filter: query | orderBy:predicate:reverse" ng-show="!fileNavigator.requesting && !item.model.root">
-            <td class="text-center" ng-if="!config.allowedActions.agaveUpload && !config.allowedActions.agaveSelect">
+            <td class="text-center" ng-if="!config.allowedActions.agaveUpload && !config.allowedActions.agaveSelect && system.default">
               <label title="Download">
                 <input type="checkbox" data-checklist-model="fileNavigator.fileListSelected" data-checklist-value="item" ng-disabled="item.model.type === 'dir'">
               </label>
