@@ -116,8 +116,8 @@
             item = item instanceof fileItem ? item : new fileItem(null, null, $scope.system);
             item.revert && item.revert();
             $scope.temp = item;
-            $scope.temp.postit.lifetime = 30; // pre-set the values on the postits modal
-            $scope.temp.postit.maxUses = 1;   // pre-set the values on the postits modal
+            $scope.temp.postit.lifetime = 365; // pre-set the values on the postits modal
+            $scope.temp.postit.maxUses = 100;   // pre-set the values on the postits modal
         };
 
         $scope.smartClick = function(item) {
@@ -342,6 +342,13 @@
         $scope.selectTime = function(time){
           $scope.timeItem = time;
         };
+
+        var clipboard = new Clipboard('#copy-clip-button');
+
+        $scope.notifyClipboard = function(){
+          App.alert({message: $translate.instant('Link Copied to Clipboard'),closeInSeconds: 5  });
+        }
+
         $scope.createPostit = function(item){
           item.createPostit($scope.timeItem)
           .then(
@@ -532,10 +539,6 @@
 
         if ($scope.$parent.$parent.system) {
             $scope.fileNavigator.refresh();
-        }
-
-        $scope.notifyClipboard = function(){
-          App.alert({message: $translate.instant('Link Copied to Clipboard'),closeInSeconds: 5  });
         }
 
         $rootScope.$on('af:directory-change', function(event, systemId, newPath) {
