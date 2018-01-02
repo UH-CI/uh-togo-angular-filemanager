@@ -2,6 +2,8 @@
     "use strict";
     angular.module('FileManagerApp').service('fileNavigator', [
         '$http', '$q', '$rootScope', 'fileManagerConfig', 'FilesController', 'fileItem', '$localStorage', function ($http, $q, $rootScope, fileManagerConfig, FilesController, fileItem, $localStorage) {
+        
+        $rootScope.username = $localStorage.activeProfile.username;
 
         var FileNavigator = function(system, path) {
             this.requesting = false;

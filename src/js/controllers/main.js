@@ -47,6 +47,18 @@
         $scope.uploadFileList = [];
         $scope.viewTemplate = $cookies.viewTemplate || 'main-table.html';
 
+        $scope.getUsername = function() {
+          return $rootScope.username;
+        }
+
+        $scope.isAdminUser = function() {
+            var adminList = ['seanbc','jgeis','omeier','ike-admin'];
+            if (adminList.indexOf($scope.getUsername()) >= 0) {
+              return true;
+            }
+            return false;
+        }
+
         $scope.get_staged_uuids = function(){
           MetaController.listMetadata("{'name':{'$in':['stagged','staged']}}")
             .then(function(response){
