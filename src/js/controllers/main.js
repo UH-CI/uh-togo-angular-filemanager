@@ -233,7 +233,7 @@
           // tell the user a file with the same name already exists in that location.
             var origFullPath = item.model.path.join('/') + "/" + item.model.name;
             var newFullPath = item.tempModel.path.join('/') + "/" + item.tempModel.name;
-            if (item.isFolder() && newFullPath.startsWith(origFullPath)) {
+            if (item.isFolder() && newFullPath.startsWith(origFullPath + "/")) {
             	item.error = $translate.instant('error_cant_nest_folder_in_itself');
             }
             else {
@@ -271,7 +271,7 @@
             var origFullPath = item.model.path.join('/') + "/" + item.model.name;
             var newFullPath = item.tempModel.path.join('/') + "/" + item.tempModel.name;
             // it works if you try to copy a folder into itself, but gives a weird error message, for now, don't allow
-            if (item.isFolder() && newFullPath.startsWith(origFullPath)) {
+            if (item.isFolder() && newFullPath.startsWith(origFullPath + "/")) {
             	item.error = $translate.instant('error_cant_nest_folder_in_itself');
             }
   	        FilesController.listFileItems(item.tempModel.system.id, newFullPath, 999999, 0)
