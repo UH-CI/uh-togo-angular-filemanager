@@ -126,7 +126,10 @@
             -->
 
             <td ng-if="item.model.system.default" class="hidden-sm hidden-xs" >
-              <span class="badge badge-info" ng-if="staged_filenames.indexOf(item.model._links.self.href) >= 0">Staged</span>
+              <!--<span class="badge badge-info" ng-if="item.model.type === 'file' && staged_filenames.indexOf(item.model._links.self.href) >= 0">Staged</span>-->
+              <!--<span class="badge badge-info" ng-if="item.model.type === 'file' && published_filenames.indexOf(item.model._links.self.href) >= 0">Shared</span>-->
+              <span class="badge badge-info" ng-if="item.model.type === 'file' && isStaged(item.model._links.self.href)">Staged</span>
+              <span class="badge badge-info" ng-if="item.model.type === 'file' && isPublished(item.model._links.self.href)">Shared</span>
               <!--
               <span class="badge badge-warning" ng-if="rejected_filenames.indexOf(item.model._links.self.href) >= 0">
                <label class="control-label pull-left" data-toggle="tooltip" title='{{rejected_reasons[rejected_filenames.indexOf(item.model._links.self.href)]}}'>Please Revise</label>
@@ -144,7 +147,7 @@
                     $('[data-toggle="popover"]').popover();
                 });
               </script>
-              <span class="badge badge-success" ng-if="published_filenames.indexOf(item.model._links.self.href) >= 0">Annotated</span>
+              <span class="badge badge-success" ng-if="item.model.type === 'file' && published_filenames.indexOf(item.model._links.self.href) >= 0">Annotated</span>
             </td>
             <!-- <td class="text-right" ng-if="config.allowedActions.agaveUpload && config.allowedActions.agaveSelect">
                 <div ng-include="config.tplPath + '/item-toolbar.html'"></div>

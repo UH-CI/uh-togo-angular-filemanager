@@ -204,6 +204,7 @@
               .then(function(resp) {
                 MetaController.listMetadata("{'name':'rejected'}")
                   .then(function(response){
+                    if (response.result.length > 0) {
                       var metadatum = response.result[0];
                       console.log(metadatum.uuid)
                       var body = {};
@@ -228,7 +229,8 @@
                       if (changeMade) {
                         MetaController.updateMetadata(body,metadatum.uuid).then(console.log("response:"+angular.toJson(response)));
                       }
-                      return callback(resp.data);
+                    }
+                    return callback(resp.data);
                 });
              });
           });
