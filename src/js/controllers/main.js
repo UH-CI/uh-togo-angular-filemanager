@@ -469,7 +469,11 @@
           var uuids = [];
           $scope.requesting = true;
           $scope.fileNavigator.requesting = true;
-          FilesController.indexFileItems(model.system.id,model.path[0]+'/'+model.name,1,0)
+          var path = model.name;
+          if (model.path.length > 0) {
+            path = model.fullPath();
+          }
+          FilesController.indexFileItems(model.system.id,path,1,0)
           .then(function(response){
               uuids.push(response[0].uuid)
               $scope.fileUploader.stageForRepo(uuids).then(function(){})
