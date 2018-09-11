@@ -486,7 +486,11 @@
         $scope.stageFilesForRepo = function(fileListSelected){
           var uuids = [];
           angular.forEach(fileListSelected, function(file){
-            FilesController.indexFileItems(file.model.system.id,file.model.path+'/'+file.model.name,1,0)
+            var path = file.model.name;
+            if (file.model.path.length > 0) {
+              path = file.model.fullPath();
+            }
+            FilesController.indexFileItems(file.model.system.id,path,1,0)
             .then(function(response){
               uuids.push(response[0].uuid)
               $scope.fileUploader.stageForRepo(uuids).then(function(){})
