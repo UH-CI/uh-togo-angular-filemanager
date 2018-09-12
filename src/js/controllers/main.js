@@ -64,7 +64,8 @@
             .then(function(response){
               $scope.staged_filenames =[]
               angular.forEach(response.result[0]._links.associationIds, function(file){
-                $scope.staged_filenames.push(file.href)
+                //console.log("get_staged_uuids: " + file.href);
+                $scope.staged_filenames.push(file.href);
               })
             })
         }
@@ -92,6 +93,21 @@
                 $scope.rejected_reasons.push(reason);
               });
             })
+        }
+
+        $scope.isRejected = function(item) {
+          //console.log("isRejected: " + item);
+          return $scope.rejected_filenames.indexOf(item) >= 0;
+        }
+
+        $scope.isPublished = function(item) {
+          //console.log("isPublished: " + item);
+          return $scope.published_filenames.indexOf(item) >= 0;
+        }
+
+        $scope.isStaged = function(item) {
+          //console.log("isStaged: " + item);
+          return $scope.staged_filenames.indexOf(item) >= 0;
         }
 
         $scope.get_staged_uuids();
@@ -472,6 +488,7 @@
           var path = model.name;
           if (model.path.length > 0) {
             path = model.fullPath();
+            path = path.substr(1);
           }
           FilesController.indexFileItems(model.system.id,path,1,0)
           .then(function(response){
@@ -489,6 +506,7 @@
             var path = file.model.name;
             if (file.model.path.length > 0) {
               path = file.model.fullPath();
+              path = path.substr(1);
             }
             FilesController.indexFileItems(file.model.system.id,path,1,0)
             .then(function(response){
