@@ -1,4 +1,5 @@
 <div ng-controller="FileManagerCtrl" class="browser-container">
+    <h2 ng-if="system.id.includes('project')">{{system.name}}</h2>
     <div ng-include="config.tplPath + '/navbar.html'" class="browser-title"></div>
 
     <div class="container-fluid browser-body">

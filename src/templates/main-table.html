@@ -1,7 +1,7 @@
 <table class="table mb0 table-files table-striped table-bordered table-hover">
     <thead>
         <tr>
-           <th class="col-md-2 text-center" ng-if="!config.allowedActions.agaveUpload && !config.allowedActions.agaveSelect && system.default">
+           <th class="col-md-2 text-center" ng-if="!config.allowedActions.agaveUpload && !config.allowedActions.agaveSelect &&( system.default || system.id.includes('project'))">
                 <input type="checkbox" ng-click="checkAll = !checkAll; checkAllFiles(checkAll);">
                 <div class="btn-group" ng-show="fileNavigator.fileListSelected.length !== 0">
                     <a class="btn btn-outline" href="#" data-toggle="dropdown">
@@ -12,10 +12,10 @@
                      <li ng-if="!app.available && system.default">
                           <a ng-click="metadataFiles(fileNavigator.fileListSelected)"> <i class="fa fa-tag"></i> Annotate Files</a>
                       </li>
-                        <li ng-if="!app.available && system.default">
+                        <li ng-if="!app.available && system.default ">
                             <a ng-click="stageFilesForRepo(fileNavigator.fileListSelected)"> <i class="fa fa-star-half-o"></i> Stage/Unstage For Repository</a>
                         </li>
-                        <li ng-show="config.allowedActions.move && system.default">
+                        <li ng-show="config.allowedActions.move && (system.default || system.id.includes('project'))">
                                         <a href="" tabindex="-1" data-toggle="modal" data-target="#groupfilesmove" ng-click="getMoveSystems()">
                                             <i class="fa fa-folder-open-o"></i> {{'move' | translate}}
                                         </a>
@@ -56,7 +56,7 @@
             </th>
              -->
 
-            <th ng-if="fileNavigator.fileList[0].model.system.default && !config.allowedActions.agaveSelect" class="col-md-4 hidden-sm hidden-xs">
+            <th ng-if="fileNavigator.fileList[0].model.system.default" class="col-md-4 hidden-sm hidden-xs">
                 <a href="">
                     {{"Status" | translate}}
                 </a>
@@ -64,7 +64,7 @@
 
             <!-- <th class="text-right" ng-if="config.allowedActions.agaveUpload && config.allowedActions.agaveSelect">Actions</th> -->
             <th class="text-center" ng-if="config.allowedActions.agaveSelect">Select</th>
-            <th width="10%" class="text-center" ng-if="!config.allowedActions.agaveSelect"> Actions</th>
+            <th width="10%" class="text-center"> Actions</th>
         </tr>
     </thead>
     <tbody class="file-item">
@@ -84,7 +84,7 @@
             </td>
         </tr>
         <tr ng-repeat="item in fileNavigator.fileList | filter: query | orderBy:predicate:reverse" ng-show="!fileNavigator.requesting && !item.model.root">
-            <td class="text-center" ng-if="!config.allowedActions.agaveUpload && !config.allowedActions.agaveSelect && system.default">
+            <td class="text-center" ng-if="!config.allowedActions.agaveUpload && !config.allowedActions.agaveSelect && (system.default || system.id.includes('project'))">
               <label title="Download">
                 <input type="checkbox" data-checklist-model="fileNavigator.fileListSelected" data-checklist-value="item" ng-disabled="item.model.type === 'dir'">
               </label>
@@ -125,11 +125,8 @@
             </td>
             -->
 
-            <td ng-if="item.model.system.default && !config.allowedActions.agaveSelect" class="hidden-sm hidden-xs">
-              <!--<span class="badge badge-info" ng-if="item.model.type === 'file' && staged_filenames.indexOf(item.model._links.self.href) >= 0">Staged</span>-->
-              <!--<span class="badge badge-info" ng-if="item.model.type === 'file' && published_filenames.indexOf(item.model._links.self.href) >= 0">Shared</span>-->
-              <span class="badge badge-info" ng-if="item.model.type === 'file' && isStaged(item.model._links.self.href)">Staged</span>
-              <span class="badge badge-info" ng-if="item.model.type === 'file' && isPublished(item.model._links.self.href)">Shared</span>
+            <td ng-if="item.model.system.default" class="hidden-sm hidden-xs" >
+              <span class="badge badge-info" ng-if="staged_filenames.indexOf(item.model._links.self.href) >= 0">Staged</span>
               <!--
               <span class="badge badge-warning" ng-if="rejected_filenames.indexOf(item.model._links.self.href) >= 0">
                <label class="control-label pull-left" data-toggle="tooltip" title='{{rejected_reasons[rejected_filenames.indexOf(item.model._links.self.href)]}}'>Please Revise</label>
@@ -147,7 +144,7 @@
                     $('[data-toggle="popover"]').popover();
                 });
               </script>
-              <span class="badge badge-success" ng-if="item.model.type === 'file' && published_filenames.indexOf(item.model._links.self.href) >= 0">Annotated</span>
+              <span class="badge badge-success" ng-if="published_filenames.indexOf(item.model._links.self.href) >= 0">Annotated</span>
             </td>
             <!-- <td class="text-right" ng-if="config.allowedActions.agaveUpload && config.allowedActions.agaveSelect">
                 <div ng-include="config.tplPath + '/item-toolbar.html'"></div>
@@ -160,7 +157,7 @@
               </label>
             </td>
 
-            <td class="text-center" ng-click="touch(item)" ng-if="!config.allowedActions.agaveSelect">
+            <td class="text-center" ng-click="touch(item)">
                <div ng-if="item.model.type === 'file' || system.default" class="btn-group" class="btn-group">
                    <a class="btn red btn-outline" href="#" data-toggle="dropdown">
                        Actions
