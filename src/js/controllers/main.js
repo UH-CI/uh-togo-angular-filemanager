@@ -65,7 +65,7 @@
               $scope.staged_filenames =[]
               angular.forEach(response.result[0]._links.associationIds, function(file){
                 //console.log("get_staged_uuids: " + file.href);
-                $scope.staged_filenames.push(file.href);
+                $scope.staged_filenames.push(encodeURI(file.href));
               })
             })
         }
@@ -76,7 +76,7 @@
               $scope.published_uuids =  response.result[0].associationIds;
               $scope.published_filenames =[]
               angular.forEach(response.result[0]._links.associationIds, function(file){
-                $scope.published_filenames.push(file.href)
+                $scope.published_filenames.push(encodeURI(file.href))
               })
             })
         }
@@ -86,7 +86,7 @@
             .then(function(response){
               $scope.rejected_filenames =[]
               angular.forEach(response.result[0]._links.associationIds, function(file){
-                $scope.rejected_filenames.push(file.href);
+                $scope.rejected_filenames.push(encodeURI(file.href));
               });
               $scope.rejected_reasons = [];
               angular.forEach(response.result[0].value.reasons, function(reason){
