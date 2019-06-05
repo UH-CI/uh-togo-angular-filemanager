@@ -1,6 +1,6 @@
 (function(window, angular) {
     "use strict";
-    angular.module('FileManagerApp').service('fileUploader', ['$http', '$q', '$rootScope', 'fileManagerConfig', 'Configuration', 'Upload', 'PostitsController', 'FilesController', 'MetaController', function ($http, $q, $rootScope, fileManagerConfig, Configuration, Upload, PostitsController, FilesController, MetaController) {
+    angular.module('FileManagerApp').service('fileUploader', ['$http', '$q', '$rootScope','$localStorage', 'fileManagerConfig', 'Configuration', 'Upload', 'PostitsController', 'FilesController', 'MetaController', function ($http, $q, $rootScope, $localStorage, fileManagerConfig, Configuration, Upload, PostitsController, FilesController, MetaController) {
 
         function deferredHandler(data, deferred, errorMessage) {
             if (!data || typeof data !== 'object') {
@@ -178,30 +178,51 @@
            })
         };
 
-        this.stageFile = function(uuids, callback){
+        this.stageFile = function(uuids, email, callback){
          MetaController.listMetadata("{'name':{'$in':['stagged','staged']}}")
            .then(function(response){
               var metadatum = response.result[0];
               var body = {};
+              body.name = metadatum.name;
+              body.value = metadatum.value;
+              body.schemaId = metadatum.schemaId;
+              if(metadatum.value.emails == null){
+                body.value.emails = {};
+              }
               body.associationIds = metadatum.associationIds;
               //check if fileUuids are already associated to be stagged
               angular.forEach(uuids, function(uuid){
                 var index = body.associationIds.indexOf(uuid);
                 if (index < 0) {
                   body.associationIds.push(uuid);
+                  body.value.emails[uuid] =email
                 }
+                //unstage it
                 else if (index >= 0) {
                   body.associationIds.splice(index, 1);
+                  delete body.value.emails[uuid]
                 }
               });
-              body.name = metadatum.name;
-              body.value = metadatum.value;
-              body.schemaId = metadatum.schemaId;
-              body.rejected = metadatum.rejected;
+
+              //body.rejected = metadatum.rejected;
 
               //if uuid was rejected before remove it from the rejected schema
               return   MetaController.updateMetadata(body,metadatum.uuid)
               .then(function(resp) {
+                var post_data = {}//to:"seanbc@hawaii.edu",from:"noReply-ikewai@hawaii.edu",subject:"Staged Updated",message:"User: "+ email+" has updated stagged files."};
+                var url = $localStorage.tenant.baseUrl.replace("https","http").slice(0, -1)+':8080/email?to=uhitsci@gmail.com&from=noReply-ikewai@hawaii.edu&subject="Staged Updated"&message="User: '+email+' has updated staged files."';
+
+                var options = {
+
+                     headers:{ 'Authorization':  'Bearer ' + $localStorage.token.access_token}
+                }
+                $http.post(url,post_data, options)
+                 .success(function (data, status, headers, config) {
+                   console.log({message:angular.toJson(data)})
+                 })
+                 .error(function (data, status, header, config) {
+                     console.log({error_message:angular.toJson(data)});
+                 });
                 MetaController.listMetadata("{'name':'rejected'}")
                   .then(function(response){
                     if (response.result.length > 0) {
@@ -236,12 +257,12 @@
           });
         };
 
-        this.stageForRepo = function(fileUuids){
+        this.stageForRepo = function(fileUuids,email){
          var self = this;
          var promises = [];
          //create promise for adding association to staging metadata record
          promises.push(
-           self.stageFile(fileUuids, function(value){
+           self.stageFile(fileUuids,email, function(value){
              $rootScope.$broadcast('metadata-status-change');
              //self.files.push(value); //not doing anything with this at the moment
            })

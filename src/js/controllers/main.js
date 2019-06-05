@@ -1,13 +1,13 @@
 (function(window, angular, $) {
     "use strict";
     angular.module('FileManagerApp').controller('FileManagerCtrl', [
-    '$scope', '$state', '$q','$rootScope', '$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader','Commons', 'FilesController', 'SystemsController','MetaController',
-        function($scope, $state, $q, $rootScope, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, Commons, FilesController, SystemsController,MetaController) {
+    '$scope', '$state', '$q','$rootScope', '$localStorage','$translate', '$cookies', '$filter', '$ocLazyLoad', 'fileManagerConfig', 'fileItem', 'fileNavigator', 'fileUploader','Commons', 'FilesController', 'SystemsController','MetaController',
+        function($scope, $state, $q, $rootScope, $localStorage, $translate, $cookies, $filter, $ocLazyLoad, fileManagerConfig, fileItem, FileNavigator, FileUploader, Commons, FilesController, SystemsController,MetaController) {
         $scope.config = fileManagerConfig;
         $scope.appName = fileManagerConfig.appName;
         $scope.modes = ['Javascript', 'Shell', 'XML', 'Markdown', 'CLike', 'Python'];
         $scope.cmMode = '';
-
+        $scope.email = $localStorage.activeProfile.email;;
         $scope.cmOptions = {
             lineWrapping: true,
             lineNumbers: true,
@@ -51,6 +51,10 @@
           return $rootScope.username;
         }
 
+        $scope.getEmail = function(){
+          return $localStorage.activeprofile.email;
+        }
+
         $scope.isAdminUser = function() {
             var adminList = ['seanbc','jgeis','omeier','ike-admin'];
             if (adminList.indexOf($scope.getUsername()) >= 0) {
@@ -65,7 +69,7 @@
               $scope.staged_filenames =[]
               angular.forEach(response.result[0]._links.associationIds, function(file){
                 //console.log("get_staged_uuids: " + file.href);
-                $scope.staged_filenames.push(file.href);
+                $scope.staged_filenames.push(encodeURI(file.href));
               })
             })
         }
@@ -76,7 +80,7 @@
               $scope.published_uuids =  response.result[0].associationIds;
               $scope.published_filenames =[]
               angular.forEach(response.result[0]._links.associationIds, function(file){
-                $scope.published_filenames.push(file.href)
+                $scope.published_filenames.push(encodeURI(file.href))
               })
             })
         }
@@ -86,7 +90,7 @@
             .then(function(response){
               $scope.rejected_filenames =[]
               angular.forEach(response.result[0]._links.associationIds, function(file){
-                $scope.rejected_filenames.push(file.href);
+                $scope.rejected_filenames.push(encodeURI(file.href));
               });
               $scope.rejected_reasons = [];
               angular.forEach(response.result[0].value.reasons, function(reason){
@@ -493,7 +497,7 @@
           FilesController.indexFileItems(model.system.id,path,1,0)
           .then(function(response){
               uuids.push(response[0].uuid)
-              $scope.fileUploader.stageForRepo(uuids).then(function(){})
+              $scope.fileUploader.stageForRepo(uuids, $scope.email ).then(function(){})
           },function(response){
             $scope.requesting = false;
             $scope.fileNavigator.requesting = false;
