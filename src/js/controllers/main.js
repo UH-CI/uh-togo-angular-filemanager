@@ -598,7 +598,7 @@
             $scope.get_staged_uuids();
             $scope.get_published_uuids();
             $scope.get_rejected_uuids();
-            $scope.fileNavigator = new FileNavigator($scope.system, $scope.$parent.$parent.path);
+          //  $scope.fileNavigator = new FileNavigator($scope.system, $scope.$parent.$parent.path);
             $scope.fileNavigator.refresh();
         });
 
