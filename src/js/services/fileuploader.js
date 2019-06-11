@@ -210,7 +210,7 @@
               return   MetaController.updateMetadata(body,metadatum.uuid)
               .then(function(resp) {
                 var post_data = {}//to:"seanbc@hawaii.edu",from:"noReply-ikewai@hawaii.edu",subject:"Staged Updated",message:"User: "+ email+" has updated stagged files."};
-                var url = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=ikewai-help@lists.hawaii.edu&from=noReply-ikewai@hawaii.edu&subject="Staged Updated"&message="User: '+email+' has updated staged files. <br/><br/> Project: ikewaihelp"';
+                var url = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=ikewai-help@lists.hawaii.edu&from=noReply-ikewai@hawaii.edu&subject="Staged Updated"&message="User: '+email+' has updated staged files. \n\n Project: ikewaihelp"';
 
                 var options = {
 
