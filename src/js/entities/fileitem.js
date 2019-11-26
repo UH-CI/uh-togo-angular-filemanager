@@ -751,6 +751,12 @@
             return this.model.type === 'dir';
         };
 
+        FileItem.prototype.currentUserIsAdmin = function() {
+          var adminList = ["jgeis","seanbc","mduman","cshuler"];
+          var result = adminList.includes($localStorage.activeProfile.username);
+          return result;
+       };
+
         FileItem.prototype.isPreviewable = function() {
            return !this.isFolder() && fileManagerConfig.isPreviewableFilePattern.test(this.model.name);
         };
