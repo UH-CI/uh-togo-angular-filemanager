@@ -56,7 +56,8 @@
             </th>
              -->
 
-            <th ng-if="fileNavigator.fileList[0].model.system.default" class="col-md-4 hidden-sm hidden-xs">
+            <!-- <th ng-if="fileNavigator.fileList[0].model.system.default" class="col-md-4 hidden-sm hidden-xs"> -->
+            <th class="col-md-4 hidden-sm hidden-xs">
                 <a href="">
                     {{"Status" | translate}}
                 </a>
@@ -125,7 +126,8 @@
             </td>
             -->
 
-            <td ng-if="item.model.system.default" class="hidden-sm hidden-xs" >
+            <!--<td ng-if="item.model.system.default" class="hidden-sm hidden-xs" > -->
+            <td class="hidden-sm hidden-xs" >
               <span class="badge badge-info" ng-if="staged_filenames.indexOf(item.model._links.self.href) >= 0">Staged</span>
               <!--
               <span class="badge badge-warning" ng-if="rejected_filenames.indexOf(item.model._links.self.href) >= 0">
@@ -144,7 +146,7 @@
                     $('[data-toggle="popover"]').popover();
                 });
               </script>
-              <span class="badge badge-success" ng-if="published_filenames.indexOf(item.model._links.self.href) >= 0">Annotated</span>
+              <span class="badge badge-success" ng-if="published_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to team data preview</span>
             </td>
             <!-- <td class="text-right" ng-if="config.allowedActions.agaveUpload && config.allowedActions.agaveSelect">
                 <div ng-include="config.tplPath + '/item-toolbar.html'"></div>
