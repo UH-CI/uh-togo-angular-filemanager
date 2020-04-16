@@ -146,12 +146,12 @@
                     $('[data-toggle="popover"]').popover();
                 });
               </script>
-              <span class="badge badge-success" ng-if="pushed_to_repository_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Repository</span>
-              <span class="badge badge-success" ng-if="staged_to_hydroshare_filenames.indexOf(item.model._links.self.href) >= 0">Staged to Hydroshare</span>
-              <span class="badge badge-success" ng-if="staged_to_ikewai_filenames.indexOf(item.model._links.self.href) >= 0">Staged to Ikewai.org</span>
-              <span class="badge badge-success" ng-if="pushed_to_hydroshare_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Hydroshare</span>
-              <span class="badge badge-success" ng-if="pushed_to_ikewai_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Ikewai.org</span>
-              <span class="badge badge-success" ng-if="isAnnotated(item.model._links.self.href)">Annotated</span>
+              <div><span class="badge badge-success" ng-if="pushed_to_repository_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Annotated Repository</span></div>
+              <div><span class="badge badge-success" ng-if="staged_to_hydroshare_filenames.indexOf(item.model._links.self.href) >= 0">Staged to Hydroshare</span></div>
+              <div><span class="badge badge-success" ng-if="staged_to_ikewai_filenames.indexOf(item.model._links.self.href) >= 0">Staged to Ikewai.org</span></div>
+              <div><span class="badge badge-success" ng-if="pushed_to_hydroshare_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Hydroshare</span></div>
+              <div><span class="badge badge-success" ng-if="pushed_to_ikewai_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Ikewai.org</span></div>
+              <div><span class="badge badge-success" ng-if="isAnnotated(item.model._links.self.href)">Annotated</span>
             </td>
             <!-- <td class="text-right" ng-if="config.allowedActions.agaveUpload && config.allowedActions.agaveSelect">
                 <div ng-include="config.tplPath + '/item-toolbar.html'"></div>
