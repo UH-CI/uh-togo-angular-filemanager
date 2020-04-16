@@ -737,6 +737,7 @@
         }
 
         $rootScope.$on('af:directory-change', function(event, systemId, newPath) {
+          $scope.annotated_loaded = false;
           if ($scope.config.allowedActions.agaveUpload === false && $scope.config.allowedActions.agaveSelect === false){
             if (newPath) {
                 $scope.$parent.$parent.$state.transitionTo(
@@ -758,6 +759,7 @@
 
         $scope.$watch('$parent.$parent.system', function(val) {
             $scope.system = val;
+            $scope.annotated_loaded = false;
             $scope.fileNavigator = new FileNavigator($scope.system, $scope.$parent.$parent.path);
             $scope.fileNavigator.refresh();
         });
