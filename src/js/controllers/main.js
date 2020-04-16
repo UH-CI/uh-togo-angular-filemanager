@@ -46,6 +46,9 @@
         $scope.fileUploader = FileUploader;
         $scope.uploadFileList = [];
         $scope.viewTemplate = $cookies.viewTemplate || 'main-table.html';
+        $scope.annotated_uuids = [];
+        $scope.annotated_filenames = [];
+        $scope.annotated_loaded = false;
 
         $scope.getUsername = function() {
           return $rootScope.username;
@@ -56,13 +59,101 @@
         }
 
         $scope.isAdminUser = function() {
-            var adminList = ['seanbc','jgeis','omeier','ike-admin'];
+            var adminList = ['seanbc','jgeis','mduman','gwenj','cshuler','ike-admin'];
             if (adminList.indexOf($scope.getUsername()) >= 0) {
               return true;
             }
             return false;
         }
 
+        $scope.get_annotated_uuids = function() {
+          $scope.annotated_loaded = true;
+          $scope.requesting = true;
+          $scope.fileNavigator.requesting = true;
+          console.log($scope.system);
+          console.log($scope.path);
+          $scope.fileUuids = [];
+          $scope.fileNames = [];
+          $scope.annotated_uuids = [];
+          $scope.annotated_filenames = [];
+          var tempPath = $scope.fileNavigator.currentPath.join("/");
+          console.log("temp: " + $scope.system + ", " + $scope.$parent.$parent.path);
+          FilesController.indexFileItems($scope.fileNavigator.system.id,tempPath)
+          .then(function(response){
+            angular.forEach(response, function(result){
+              if (result.type === "file") {
+                $scope.fileUuids.push(result.uuid);
+                $scope.fileNames.push(result._links.self.href)
+              }
+            });
+            console.log("fileUUids: " + $scope.fileUuids);
+            if ($scope.fileUuids.length > 0) {
+              //'{"$and":[{"name":"DataDescriptor"},{"associationIds":{"$in":["4180603790807199255-242ac113-0001-002","6446853317307264535-242ac113-0001-002"]}}]}'
+              var query =  "{$and:[{'name':'DataDescriptor'},{'associationIds':{$in:['"+$scope.fileUuids.join("','")+"']}}]}";
+              console.log("Query1: " + query);
+              MetaController.listMetadata(query).then(
+                function (response) {
+                  $scope.fileMetadataObjects = response.result;
+                  $scope.allAssociationIds = [];
+                  angular.forEach($scope.fileMetadataObjects, function(value, key) {
+                    $scope.allAssociationIds.push(value.associationIds)
+                  });
+
+                  // allAssociationIds is an array of arrays, loop through the outer array getting each inner array
+                  $scope.allAssociationIds.forEach(function (arr, assocIndex) {
+                    // loop through each fileuuid 
+                    $scope.fileUuids.forEach(function (fileUUid, fileIndex) {
+                      // see if the inner array contains one of the file uuids, and if so, add the fileUUid to the annotated array
+                      // avoid duplicates, although it doesn't really matter
+                      if (arr.indexOf(fileUUid) > -1 && $scope.annotated_uuids.indexOf(fileUUid) < 0) {
+                        $scope.annotated_uuids.push(fileUUid);
+                      }
+                    });
+                  });
+                  // unfortunately, it turns out that uuids aren't stored on the items in the filenavigator,
+                  // so I had to change this to also get the filenames.
+                  $scope.annotated_uuids.forEach(function(fileUuid, index) {
+                    var i = $scope.fileUuids.indexOf(fileUuid);
+                    if (i > -1) {
+                      $scope.annotated_filenames.push($scope.fileNames[i]);
+                    }
+                  });
+                  console.log($scope.annotated_uuids);
+                }
+              );
+            }
+          });
+          $scope.requesting = false;
+          $scope.fileNavigator.requesting = false;
+        }
+
+
+        $scope.get_staged_to_ikewai_uuids = function(){
+          MetaController.listMetadata("{'name':'stagedToIkewai'}")
+            .then(function(response){
+              $scope.staged_to_ikewai_filenames = [];
+              if (response.result[0]) {
+                angular.forEach(response.result[0]._links.associationIds, function(file){
+                  console.log("get_staged_to_ikewai_uuids: " + file.href);
+                  $scope.staged_to_ikewai_filenames.push(encodeURI(file.href));
+                })
+              }
+            })
+        }
+
+        $scope.get_staged_to_hydroshare_uuids = function(){
+          MetaController.listMetadata("{'name':'stagedToHydroshare'}")
+            .then(function(response){
+              $scope.staged_to_hydroshare_filenames =[]
+              if (response.result[0]) {
+                angular.forEach(response.result[0]._links.associationIds, function(file){
+                  console.log("get_staged_to_ikewai_uuids: " + file.href);
+                  $scope.staged_to_hydroshare_filenames.push(encodeURI(file.href));
+                })
+              }
+            })
+        }
+        
         $scope.get_staged_uuids = function(){
           MetaController.listMetadata("{'name':{'$in':['stagged','staged']}}")
             .then(function(response){
@@ -80,8 +171,39 @@
               $scope.published_uuids =  response.result[0].associationIds;
               $scope.published_filenames =[]
               angular.forEach(response.result[0]._links.associationIds, function(file){
+                //console.log("get_published_uuids: " + file.href);
                 $scope.published_filenames.push(encodeURI(file.href))
               })
+            })
+        }
+
+        $scope.get_published_to_ikewai_uuids = function(){
+          MetaController.listMetadata("{'name':'publishedToIkewai'}")
+            .then(function(response){
+              var respResult = response.result[0];
+              if (respResult) {
+                $scope.published_to_ikewai_uuids =  respResult.associationIds;
+                $scope.published_to_ikewai_filenames =[]
+                angular.forEach(response.result[0]._links.associationIds, function(file){
+                  console.log("get_published_to_ikewai_uuids: " + file.href);
+                  $scope.published_to_ikewai_filenames.push(encodeURI(file.href))
+                })
+              }
+            })
+        }
+
+        $scope.get_published_to_hydroshare_uuids = function(){
+          MetaController.listMetadata("{'name':'publishedToHydroshare'}")
+            .then(function(response){
+              var respResult = response.result[0];
+              if (respResult) {
+                $scope.published_to_hydroshare_uuids = respResult.associationIds;
+                $scope.published_to_hydroshare_filenames =[]
+                angular.forEach(response.result[0]._links.associationIds, function(file){
+                  console.log("get_published_to_hydroshare_uuids: " + file.href);
+                  $scope.published_to_hydroshare_filenames.push(encodeURI(file.href))
+                })
+              }
             })
         }
 
@@ -109,14 +231,48 @@
           return $scope.published_filenames.indexOf(item) >= 0;
         }
 
+        $scope.isPublishedToIkewai = function(item) {
+          //console.log("isPublished: " + item);
+          return $scope.published_to_ikewai_filenames.indexOf(item) >= 0;
+        }
+
+        $scope.isPublishedToHydroshare = function(item) {
+          //console.log("isPublished: " + item);
+          return $scope.published_to_hydroshare_filenames.indexOf(item) >= 0;
+        }
+
         $scope.isStaged = function(item) {
           //console.log("isStaged: " + item);
           return $scope.staged_filenames.indexOf(item) >= 0;
         }
 
+        $scope.isStagedToIkewai = function(item) {
+          console.log("isStagedToIkewai: " + item);
+          return $scope.staged_to_ikewai_filenames.indexOf(item) >= 0;
+        }
+
+        $scope.isStagedToHydroshare = function(item) {
+          console.log("isStagedToHydroshare: " + item);
+          return $scope.staged_to_hydroshare_filenames.indexOf(item) >= 0;
+        }
+
+        $scope.isAnnotated = function(item) {
+          if (!$scope.annotated_loaded) {
+            $scope.get_annotated_uuids();
+          }
+          return $scope.annotated_filenames.indexOf(item) > -1;
+        }
+
         $scope.get_staged_uuids();
+        $scope.get_staged_to_ikewai_uuids();
+        $scope.get_staged_to_hydroshare_uuids();
         $scope.get_published_uuids();
+        $scope.get_published_to_ikewai_uuids();
+        $scope.get_published_to_hydroshare_uuids();
         $scope.get_rejected_uuids();
+        // can't call this right away as needed values aren't available and it crashes
+        // instead, this gets called as a result of an 'isAnnotated' call in main-table.html 
+        //$scope.get_annotated_uuids();
 
         $scope.manage_metadata = function(model, action){
           $scope.requesting = true;
@@ -125,13 +281,10 @@
           .then(function(response){
             //$state.go("filemetadata-manage",{'uuid': response[0].uuid, 'action': action});
             $state.go("filemetadata-multipleadd",{'fileUuids': response[0].uuid,'filePaths':model.name});
-          },function(response){
-            $scope.requesting = false;
-            $scope.fileNavigator.requesting = false;
-          })
+          });
+          $scope.requesting = false;
+          $scope.fileNavigator.requesting = false;
         }
-
-
 
         $scope.setTemplate = function(name) {
             $scope.viewTemplate = $cookies.viewTemplate = name;
@@ -598,6 +751,7 @@
             $scope.get_staged_uuids();
             $scope.get_published_uuids();
             $scope.get_rejected_uuids();
+            $scope.get_annotated_uuids();
           //  $scope.fileNavigator = new FileNavigator($scope.system, $scope.$parent.$parent.path);
             $scope.fileNavigator.refresh();
         });

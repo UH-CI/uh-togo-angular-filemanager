@@ -752,7 +752,7 @@
         };
 
         FileItem.prototype.currentUserIsAdmin = function() {
-          var adminList = ["jgeis","seanbc","mduman","cshuler"];
+          var adminList = ["jgeis","seanbc","mduman","cshuler","gwenj","acomerfo","kevink"];
           var result = adminList.includes($localStorage.activeProfile.username);
           return result;
        };

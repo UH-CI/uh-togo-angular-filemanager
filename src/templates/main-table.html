@@ -94,7 +94,7 @@
                 <a href="" ng-show="item.model.type === 'dir'" ng-click="smartClick(item)" title="{{item.model.name}} ({{item.model.sizeKb()}}kb)" title="{{ item.model.name }}">
                     <i class="fa fa-folder mr2"></i>
                     <i class="fa {{ item.model.name | fileIcon }} mr2" ng-show="item.model.type === 'file'"></i>
-                    {{item.model.name | strLimit : 64}}
+                    {{item.model.name | strLimit : 64}} 
                 </a>
                 <span ng-show="item.model.type === 'file'">
                   <i class="fa {{ item.model.name | fileIcon }} mr2" ></i>
@@ -147,6 +147,11 @@
                 });
               </script>
               <span class="badge badge-success" ng-if="published_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to team data preview</span>
+              <span class="badge badge-success" ng-if="staged_to_hydroshare_filenames.indexOf(item.model._links.self.href) >= 0">Staged to Hydroshare</span>
+              <span class="badge badge-success" ng-if="staged_to_ikewai_filenames.indexOf(item.model._links.self.href) >= 0">Staged to Ikewai.org</span>
+              <span class="badge badge-success" ng-if="published_to_hydroshare_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Hydroshare</span>
+              <span class="badge badge-success" ng-if="published_to_ikewai_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Ikewai.org</span>
+              <span class="badge badge-success" ng-if="isAnnotated(item.model._links.self.href)">Annotated</span>
             </td>
             <!-- <td class="text-right" ng-if="config.allowedActions.agaveUpload && config.allowedActions.agaveSelect">
                 <div ng-include="config.tplPath + '/item-toolbar.html'"></div>
