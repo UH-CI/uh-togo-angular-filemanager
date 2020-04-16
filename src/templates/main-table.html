@@ -128,7 +128,7 @@
 
             <!--<td ng-if="item.model.system.default" class="hidden-sm hidden-xs" > -->
             <td class="hidden-sm hidden-xs" >
-              <span class="badge badge-info" ng-if="staged_filenames.indexOf(item.model._links.self.href) >= 0">Staged</span>
+              <span class="badge badge-info" ng-if="staged_filenames.indexOf(item.model._links.self.href) >= 0">Staged to Repository</span>
               <!--
               <span class="badge badge-warning" ng-if="rejected_filenames.indexOf(item.model._links.self.href) >= 0">
                <label class="control-label pull-left" data-toggle="tooltip" title='{{rejected_reasons[rejected_filenames.indexOf(item.model._links.self.href)]}}'>Please Revise</label>
@@ -146,11 +146,11 @@
                     $('[data-toggle="popover"]').popover();
                 });
               </script>
-              <span class="badge badge-success" ng-if="published_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to team data preview</span>
+              <span class="badge badge-success" ng-if="pushed_to_repository_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Repository</span>
               <span class="badge badge-success" ng-if="staged_to_hydroshare_filenames.indexOf(item.model._links.self.href) >= 0">Staged to Hydroshare</span>
               <span class="badge badge-success" ng-if="staged_to_ikewai_filenames.indexOf(item.model._links.self.href) >= 0">Staged to Ikewai.org</span>
-              <span class="badge badge-success" ng-if="published_to_hydroshare_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Hydroshare</span>
-              <span class="badge badge-success" ng-if="published_to_ikewai_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Ikewai.org</span>
+              <span class="badge badge-success" ng-if="pushed_to_hydroshare_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Hydroshare</span>
+              <span class="badge badge-success" ng-if="pushed_to_ikewai_filenames.indexOf(item.model._links.self.href) >= 0">Pushed to Ikewai.org</span>
               <span class="badge badge-success" ng-if="isAnnotated(item.model._links.self.href)">Annotated</span>
             </td>
             <!-- <td class="text-right" ng-if="config.allowedActions.agaveUpload && config.allowedActions.agaveSelect">
