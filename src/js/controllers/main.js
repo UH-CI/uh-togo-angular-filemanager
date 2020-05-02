@@ -89,7 +89,7 @@
           $scope.pushed_to_hydroshare_filenames = [];
           $scope.pushed_to_ikewai_filenames = [];
           var tempPath = $scope.fileNavigator.currentPath.join("/");
-          console.log("temp: " + $scope.system + ", " + $scope.$parent.$parent.path);
+          //console.log("temp: " + $scope.system + ", " + $scope.$parent.$parent.path);
           FilesController.indexFileItems($scope.fileNavigator.system.id,tempPath)
           .then(function(response){
             angular.forEach(response, function(result){
@@ -98,11 +98,11 @@
                 $scope.fileNames.push(result._links.self.href)
               }
             });
-            console.log("fileUUids: " + $scope.fileUuids);
+            //console.log("fileUUids: " + $scope.fileUuids);
             if ($scope.fileUuids.length > 0) {
               //'{"$and":[{"name":"DataDescriptor"},{"associationIds":{"$in":["4180603790807199255-242ac113-0001-002","6446853317307264535-242ac113-0001-002"]}}]}'
               var query =  "{$and:[{'name':'DataDescriptor'},{'associationIds':{$in:['"+$scope.fileUuids.join("','")+"']}}]}";
-              console.log("Query1: " + query);
+              //console.log("Query1: " + query);
               $scope.annotated_uuids_staged_to_HS = [];
               $scope.annotated_uuids_staged_to_IW = [];
               $scope.annotated_uuids_pushed_to_HS = [];
@@ -158,7 +158,7 @@
                       }
                     }
                   });
-                  console.log($scope.annotated_uuids);
+                  //console.log($scope.annotated_uuids);
                 }
               );
             }
@@ -167,33 +167,17 @@
           $scope.fileNavigator.requesting = false;
         }
 
-        /*
-        $scope.get_staged_to_ikewai_uuids = function(){
-          MetaController.listMetadata("{'name':'stagedToIkewai'}")
-            .then(function(response){
-              $scope.staged_to_ikewai_filenames = [];
-              if (response.result[0]) {
-                angular.forEach(response.result[0]._links.associationIds, function(file){
-                  console.log("get_staged_to_ikewai_uuids: " + file.href);
-                  $scope.staged_to_ikewai_filenames.push(encodeURI(file.href));
-                })
-              }
-            })
-        }
-
-        $scope.get_staged_to_hydroshare_uuids = function(){
-          MetaController.listMetadata("{'name':'stagedToHydroshare'}")
-            .then(function(response){
-              $scope.staged_to_hydroshare_filenames =[]
-              if (response.result[0]) {
-                angular.forEach(response.result[0]._links.associationIds, function(file){
-                  console.log("get_staged_to_ikewai_uuids: " + file.href);
-                  $scope.staged_to_hydroshare_filenames.push(encodeURI(file.href));
-                })
-              }
-            })
-        }
-        */
+       $scope.public_urls = {};
+       $scope.get_public_urls = function(){
+        MetaController.listMetadata("{'name':'PublicFile'}").then(function(response){
+            $scope.public_urls = {};
+            angular.forEach(response.result, function(file){
+              //console.log("get_staged_uuids: " + file.href);
+              var id = file.value.file_private_url;
+              $scope.public_urls[id] = {"file.href": id, "publicURL": file.value.file_public_url};
+            });
+          });
+       }
 
         $scope.get_staged_uuids = function(){
           MetaController.listMetadata("{'name':{'$in':['stagged','staged']}}")
@@ -304,6 +288,7 @@
           return $scope.annotated_filenames.indexOf(item) > -1;
         }
 
+        $scope.get_public_urls();
         $scope.get_staged_uuids();
         //$scope.get_staged_to_ikewai_uuids();
         //$scope.get_staged_to_hydroshare_uuids();
@@ -439,6 +424,86 @@
           angular.element('#currentpath').val($scope.fileNavigator.currentPath.join('/'))
           angular.element('#groupfilepath').val($scope.fileNavigator.currentPath.join('/'))
         }
+
+
+        $scope.createPublicLink = function(item) {
+          var fullPath = item.model.fullPath();
+          //console.log("main.createPublicLink: " + fullPath);
+          FilesController.updateFileItemPermissionToPublicRead(fullPath).then(function(data) {
+              //"https://ikeauth.its.hawaii.edu/files/v2/media/system/ikewai-annotated-data//new_data/KiraAndSugarGlider.jpg"
+              var url = item.model._links.self.href;
+              var urlStart = url.split("media/system")[0];
+              var newUrl = urlStart + "download/public/system/ikewai-annotated-data" + fullPath; 
+              $scope.makePublicFileMetadataObject(item, newUrl);
+          }, function(data) {
+            console.log("Public links successfully created");
+          }, function (error_response) {
+            // really can't think of anything to do here
+            console.log("Got an error while creating public link: " + error_response);
+          });
+          //return deferred.promise;
+        }
+
+
+        $scope.makePublicFileMetadataObject = function(file, newUrl) {
+          //console.log("main.makePublicFileMetadataObject: " + file.rel + ", " + newUrl);
+          $scope.requesting = true;
+          
+          MetaController.listMetadataSchema("{'schema.title':'PublicFile'}",1,0).then(function(response){
+              // check if the object for this file already exists
+              var schemaId = response.result[0].uuid;
+              var privateURL = file.model._links.self.href;
+              var query = `{'name':'PublicFile','value.file_private_url':'${privateURL}'}`;
+              //console.log("query: " + query);
+              MetaController.listMetadata(query).then(function (response) {
+                // an object exists
+                if (response.result.length > 0) {
+                  console.log("This file already has a PublicFile metadata record");
+                }
+                // make a new metadata object for this file
+                else {
+                  console.log("Making a new PublicFile object");
+    
+                  var publicFile = {};
+                  publicFile.data_descriptor_uuids = [];
+                  //publicFile.data_descriptor_uuids.push(dataDescriptor.uuid);
+                  publicFile.file_public_url = newUrl;
+                  publicFile.file_uuid = "";
+                  publicFile.file_private_url = privateURL;
+                  
+                  var body = {};
+                  body.schemaId = schemaId;
+                  body.name = "PublicFile";
+                  body.value = publicFile;
+                  
+                  MetaController.addMetadata(body).then(function (response) {
+                    //console.log("Success in creating the public files metadata object")
+                    var metadataUuid = response.result.uuid;
+                    //add the default permissions for the system in addition to the owners
+                    //MetadataService.addDefaultPermissions(metadataUuid);
+                    MetaController.addMetadataPermission('{"username":"seanbc","permission":"ALL"}',metadataUuid);
+                    MetaController.addMetadataPermission('{"username":"jgeis","permission":"ALL"}',metadataUuid);
+                    MetaController.addMetadataPermission('{"username":"ike-admin","permission":"ALL"}',metadataUuid);
+
+                    // Is this needed?
+                    //MetadataService.resolveApprovedStatus(metadataUuid);//if not public make it so
+                  },
+                  function (response) {
+                    // really can't think of anything to do here
+                    console.log("Got an error: " + response.errorResponse.message);
+                  });
+                  
+                }
+             },
+              function (response) {
+                // really can't think of anything to do here
+                console.log("Got an error: " + response);
+              });
+            $scope.requesting = false;
+          });
+        }
+
+
         $scope.move = function(item){
           // checking to see if the file already exists in the new location
           // calling to get the metadata for the new file/location, if I get something back
@@ -790,6 +855,7 @@
         });
 
         $scope.$on('metadata-status-change', function(event) {
+            $scope.get_public_urls();
             $scope.get_staged_uuids();
             $scope.get_pushed_uuids();
             $scope.get_rejected_uuids();
