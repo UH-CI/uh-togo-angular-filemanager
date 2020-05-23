@@ -1,7 +1,7 @@
 (function(window, angular, $) {
     "use strict";
-    angular.module('FileManagerApp').factory('fileItem', ['$http', '$q', '$translate', '$localStorage', '$state', '$uibModal', '$rootScope', 'fileManagerConfig', 'AccessControlList', 'FilesController', 'FileManagementActionTypeEnum', 'PostitsController', 'TransformsController', 'Configuration', 'Upload',
-        function($http, $q, $translate, $localStorage, $state, $uibModal, $rootScope,fileManagerConfig, AccessControlList, FilesController, FileManagementActionTypeEnum, PostitsController, TransformsController, Configuration, Upload) {
+    angular.module('FileManagerApp').factory('fileItem', ['$http', '$q', '$translate', '$localStorage', '$state', '$uibModal', '$rootScope', 'fileManagerConfig', 'AccessControlList', 'FilesController', 'FileManagementActionTypeEnum', 'PostitsController', 'TransformsController', 'Configuration', 'Upload', 'MetaController',
+        function($http, $q, $translate, $localStorage, $state, $uibModal, $rootScope,fileManagerConfig, AccessControlList, FilesController, FileManagementActionTypeEnum, PostitsController, TransformsController, Configuration, Upload, MetaController) {
 
         var FileItem = function(model, path, system) {
             var rawModel = {
@@ -675,14 +675,74 @@
             return deferred.promise;
         };
 
+        /*
+          This removes all associations in all object type for the given fileUuid. 
+          Examples:  File, PublishedFile, stagged, rejected, published, DataDescriptor
+        */
+        FileItem.prototype.removeAssociations = function(fileUuid) {
+          var query = `{"associationIds":{"$in":["${fileUuid}"]}}`;
+          console.log("query: " + query);
+          MetaController.listMetadata(query)
+          .then(function(response) {
+            angular.forEach(response.result, function(item) {
+              var name = item.name;
+              var isStaged = false;
+              if (name === 'stagged') {
+                isStaged = true; 
+              }
+              var uuid = item.uuid;
+              console.log(name + ": " + uuid);
+              if (name === "File") {
+                FileItem.prototype.removeAssociations(uuid);
+              }
+              FilesMetadataService.removeAssociation(uuid, fileUuid, isStaged);
+            });
+          });
+        }
+
         FileItem.prototype.remove = function() {
+          //console.log("In FileItem.remove");
             var self = this;
             var deferred = $q.defer();
 
-
             self.inprocess = true;
             self.error = '';
-            FilesController.deleteFileItem(self.tempModel.fullPath(), self.model.system.id)
+            var path = self.tempModel.fullPath();
+            var sysId = self.model.system.id;
+            // get the item first so we can get the uuid and remove all associations before deleting it.
+            FilesController.indexFileItems(sysId, path).then(function(file) {
+              var fileUuid = file[0].uuid;
+              console.log("FileItemUUID: " + fileUuid);
+
+              /*
+              May need to revisit the metadata file object, if this is it's only association, we
+              should delete the metadata object as well.  ex:
+                In FileItem.remove
+                fileitem.js:730 FileItemUUID: 2116269541106707990-242ac113-0001-002
+                fileitem.js:702 query: {"associationIds":{"$in":["2116269541106707990-242ac113-0001-002"]}}
+                fileitem.js:712 stagged: 7408208083749966311-242ac1110-0001-012
+                fileitem.js:712 DataDescriptor: 7855084038009328106-242ac1110-0001-012
+                fileitem.js:712 File: 8958486975206199786-242ac1110-0001-012
+              */
+
+              FileItem.prototype.removeAssociations(fileUuid);
+
+              
+              var query = `{"name":"PublishedFile","value.oldfile-uuid":"${fileUuid}"}`;
+              console.log("query: " + query);
+              MetaController.listMetadata(query).then(function(response) {
+                angular.forEach(response.result, function(item) {
+                  console.log("Updating PublishedFile.oldfile-uuid: " + item.uuid);  
+                  item.value['oldfile-uuid'] = "";
+                  //item.value.file_uuid = item.value['file-uuid'];
+                  //item.value.oldfile_uuid = item.value['oldfile-uuid'];
+                  //delete item.value['oldfile-uuid'];
+                  //delete item.value['file-uuid'];
+                  MetaController.updateMetadata(item, item.uuid);
+                });
+              });
+              
+              FilesController.deleteFileItem(self.tempModel.fullPath(), self.model.system.id)
                 .then(function(data) {
                     self.deferredHandler({ result: data ? data: 'Successfully removed object'}, deferred);
                 }, function(data) {
@@ -690,7 +750,7 @@
                 })['finally'](function() {
                     self.inprocess = false;
                 });
-
+            });
             return deferred.promise;
         };
 
