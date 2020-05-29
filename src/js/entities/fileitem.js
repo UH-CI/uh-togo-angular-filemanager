@@ -675,6 +675,43 @@
             return deferred.promise;
         };
 
+        FileItem.prototype.removeAssociation = function(metadataUuid, uuidToRemove, staged=false){
+          var promises = [];
+          MetaController.getMetadata(metadataUuid)
+            .then(function(response){
+              var metadatum = response.result;
+              var body = metadatum;
+              body.associationIds = metadatum.associationIds;
+              var index = body.associationIds.indexOf(uuidToRemove);
+              body.associationIds.splice(index, 1);
+              //body.name = metadatum.name;
+              //body.value = metadatum.value;
+              //body.schemaId = metadatum.schemaId;
+              if (staged == true){
+                delete body.value.emails[uuidToRemove]
+              }
+              if (body.name === "rejected") {
+                body.value.title = metadatum.value.title;
+                body.value.reasons = metadatum.value.reasons;
+                body.value.reasons.splice(index, 1);
+              }
+              promises.push(MetaController.updateMetadata(body,metadataUuid))
+              var deferred = $q.defer();
+    
+              return $q.all(promises).then(
+                function(data) {
+                  $rootScope.$broadcast('associationRemoved',{message:"File Associations Removed Successfully."});
+                  $rootScope.$broadcast('broadcastUpdate');
+                  return true;
+              },
+              function(data) {
+                deferredHandler(data, deferred, "Error Removing File Metadata Associations");
+                  return false;
+              });
+            }
+          )
+        }
+
         /*
           This removes all associations in all object type for the given fileUuid. 
           Examples:  File, PublishedFile, stagged, rejected, published, DataDescriptor
@@ -695,7 +732,7 @@
               if (name === "File") {
                 FileItem.prototype.removeAssociations(uuid);
               }
-              FilesMetadataService.removeAssociation(uuid, fileUuid, isStaged);
+              FileItem.prototype.removeAssociation(uuid, fileUuid, isStaged);
             });
           });
         }
