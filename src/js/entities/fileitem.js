@@ -705,8 +705,8 @@
                   return true;
               },
               function(data) {
-                deferredHandler(data, deferred, "Error Removing File Metadata Associations");
-                  return false;
+                self.deferredHandler(data, deferred, "Error Removing File Metadata Associations");
+                return false;
               });
             }
           )
